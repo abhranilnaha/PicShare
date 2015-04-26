@@ -49,6 +49,7 @@ public class MainActivity extends FragmentActivity {
     private final String PENDING_ACTION_BUNDLE_KEY =
             "edu.sjsu.picshare:PendingAction";
 
+    private Button friendsButton;
     private Button postStatusUpdateButton;
     private Button postPhotoButton;
     private Button uploadPhotoButton;
@@ -168,6 +169,15 @@ public class MainActivity extends FragmentActivity {
         profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
         greeting = (TextView) findViewById(R.id.greeting);
 
+        
+        friendsButton=(Button) findViewById(R.id.friends);
+        friendsButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View view) {
+                onClickFriends();
+            }
+        });
+        
+        
         postStatusUpdateButton = (Button) findViewById(R.id.postStatusUpdateButton);
         postStatusUpdateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
@@ -297,6 +307,12 @@ public class MainActivity extends FragmentActivity {
     private void onClickUploadPhoto() {
     	Intent intent = new Intent(this, ToDoListActivity.class);        
         startActivity(intent);
+    }
+    
+    private void onClickFriends()
+    {
+    	Intent intent=new Intent(this, FriendsList.class);
+    	startActivity(intent);
     }
 
     private void onClickPostPhoto() {

@@ -45,6 +45,14 @@
                 android:gravity="center_horizontal"
                 facebook:preset_size="normal" />
 
+            
+            <Button
+                android:id="@+id/friends"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:text="Friends" />
+            
+            
             <Button
                 android:id="@+id/postStatusUpdateButton"
                 android:layout_width="fill_parent"

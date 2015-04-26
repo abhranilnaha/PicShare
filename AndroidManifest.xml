@@ -12,11 +12,11 @@
 
     <application
         android:name=".PicShareApplication"
+        android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name"        
-        android:allowBackup="true" >
+        android:label="@string/app_name" >
         <activity
-            android:name="edu.sjsu.picshare.MainActivity"
+            android:name=".MainActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="adjustResize" >
             <intent-filter>
@@ -51,11 +51,16 @@
             android:authorities="com.facebook.app.FacebookContentProvider528036680679756"
             android:exported="true" />
 
-        <receiver android:name="edu.sjsu.picshare.BroadcastReceiver" >
+        <receiver android:name=".BroadcastReceiver" >
             <intent-filter>
                 <action android:name="com.facebook.platform.AppCallResultBroadcast" />
             </intent-filter>
         </receiver>
+
+        <activity
+            android:name=".FriendsList"
+            android:label="@string/title_activity_friends_list" >
+        </activity>
     </application>
 
 </manifest>

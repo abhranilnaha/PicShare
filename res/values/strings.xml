@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <resources>
+
     <string name="app_name">PicShare</string>
     <string name="facebook_app_name">HelloFBSample</string>
     <string name="cancelled">Cancelled</string>
@@ -24,4 +24,13 @@
     <string name="confirm">Done</string>
     <string name="create_todo">Create Todo</string>
     <string name="menu_delete">Delete Todo</string>
+    <string name="title_activity_friends_list">FriendsList</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+        <string name="menu_settings">Settings</string>
+    
+        <string name="action1">Action1</string>
+    <string name="action2">Action2</string>
+    <string name="action3">Action3</string>
+
 </resources>
