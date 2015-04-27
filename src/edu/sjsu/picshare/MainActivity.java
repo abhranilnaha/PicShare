@@ -36,7 +36,8 @@ import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity 
+{
 
     private static final String PERMISSION = "publish_actions";
     private static final Location SEATTLE_LOCATION = new Location("") {
@@ -52,6 +53,7 @@ public class MainActivity extends FragmentActivity {
     private Button postStatusUpdateButton;
     private Button postPhotoButton;
     private Button uploadPhotoButton;
+    private Button inviteFriendsButton;
     private ProfilePictureView profilePictureView;
     private TextView greeting;
     private PendingAction pendingAction = PendingAction.NONE;
@@ -188,6 +190,21 @@ public class MainActivity extends FragmentActivity {
                 onClickUploadPhoto();
             }
         });
+        
+        inviteFriendsButton = (Button) findViewById(R.id.inviteFriendsButton);
+        inviteFriendsButton.setOnClickListener(new View.OnClickListener()
+        		{
+
+					@Override
+					public void onClick(View v) 
+					{
+						onClickViewFriends();
+						
+					}
+
+					
+        	
+        		});
 
         // Can we present the share dialog for regular links?
         canPresentShareDialog = ShareDialog.canShow(
@@ -210,6 +227,7 @@ public class MainActivity extends FragmentActivity {
         updateUI();
     }
 
+    
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -276,6 +294,13 @@ public class MainActivity extends FragmentActivity {
     private void onClickPostStatusUpdate() {
         performPublish(PendingAction.POST_STATUS_UPDATE, canPresentShareDialog);
     }
+    
+    private void onClickViewFriends() 
+    {
+		Intent intent = new Intent(this, SendInviteAcitvity.class);
+		startActivity(intent);
+		
+	}
 
     private void postStatusUpdate() {
         Profile profile = Profile.getCurrentProfile();
@@ -306,7 +331,7 @@ public class MainActivity extends FragmentActivity {
     private void postPhoto() {
         Bitmap image = BitmapFactory.decodeResource(this.getResources(), R.drawable.icon);
         SharePhoto sharePhoto = new SharePhoto.Builder().setBitmap(image).build();
-        ArrayList<SharePhoto> photos = new ArrayList<>();
+        ArrayList<SharePhoto> photos = new ArrayList<SharePhoto>();
         photos.add(sharePhoto);
 
         SharePhotoContent sharePhotoContent =
