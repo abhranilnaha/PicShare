@@ -147,6 +147,15 @@ containing a value of this type.
         public static final int com_facebook_share_button_text_color=0x7f060004;
     }
     public static final class dimen {
+        /**  Default screen margins, per the Android Design guidelines. 
+
+         Example customization of dimensions originally defined in res/values/dimens.xml
+         (such as screen margins) for screens with more than 820dp of available width. This
+         would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
+    
+         */
+        public static final int activity_horizontal_margin=0x7f070013;
+        public static final int activity_vertical_margin=0x7f070014;
         public static final int com_facebook_likeboxcountview_border_radius=0x7f070005;
         public static final int com_facebook_likeboxcountview_border_width=0x7f070006;
         public static final int com_facebook_likeboxcountview_caret_height=0x7f070004;
@@ -198,58 +207,59 @@ containing a value of this type.
         public static final int messenger_button_white_bg_selector=0x7f02001b;
     }
     public static final class id {
-        public static final int automatic=0x7f080000;
-        public static final int bottom=0x7f08000c;
-        public static final int box_count=0x7f080009;
-        public static final int button=0x7f08000a;
-        public static final int button1=0x7f08001c;
-        public static final int center=0x7f08000f;
-        public static final int checkBox1=0x7f08001e;
-        public static final int com_facebook_body_frame=0x7f080014;
-        public static final int com_facebook_button_xout=0x7f080016;
-        public static final int com_facebook_fragment_container=0x7f080012;
-        public static final int com_facebook_login_activity_progress_bar=0x7f080013;
-        public static final int com_facebook_tooltip_bubble_view_bottom_pointer=0x7f080018;
-        public static final int com_facebook_tooltip_bubble_view_text_body=0x7f080017;
-        public static final int com_facebook_tooltip_bubble_view_top_pointer=0x7f080015;
-        public static final int confirmButton=0x7f08001a;
-        public static final int createNew=0x7f080028;
-        public static final int display_always=0x7f080001;
-        public static final int friends=0x7f08001f;
-        public static final int greeting=0x7f080021;
-        public static final int gridview=0x7f08001b;
-        public static final int imageView1=0x7f08001d;
-        public static final int inline=0x7f08000d;
-        public static final int inviteFriendsButton=0x7f080026;
-        public static final int large=0x7f080003;
-        public static final int left=0x7f080010;
-        public static final int main_ui_container=0x7f080020;
-        public static final int messenger_send_button=0x7f080027;
-        public static final int nameText=0x7f080019;
-        public static final int never_display=0x7f080002;
-        public static final int normal=0x7f080004;
-        public static final int open_graph=0x7f080006;
-        public static final int page=0x7f080007;
-        public static final int postPhotoButton=0x7f080024;
-        public static final int postStatusUpdateButton=0x7f080023;
-        public static final int profilePicture=0x7f080022;
-        public static final int right=0x7f080011;
-        public static final int small=0x7f080005;
-        public static final int standard=0x7f08000b;
-        public static final int top=0x7f08000e;
-        public static final int unknown=0x7f080008;
-        public static final int uploadExisting=0x7f080029;
-        public static final int uploadPhotoButton=0x7f080025;
+        public static final int action_settings=0x7f09002a;
+        public static final int automatic=0x7f090000;
+        public static final int bottom=0x7f09000c;
+        public static final int box_count=0x7f090009;
+        public static final int button=0x7f09000a;
+        public static final int button1=0x7f09001e;
+        public static final int center=0x7f09000f;
+        public static final int checkBox1=0x7f090020;
+        public static final int com_facebook_body_frame=0x7f090016;
+        public static final int com_facebook_button_xout=0x7f090018;
+        public static final int com_facebook_fragment_container=0x7f090014;
+        public static final int com_facebook_login_activity_progress_bar=0x7f090015;
+        public static final int com_facebook_tooltip_bubble_view_bottom_pointer=0x7f09001a;
+        public static final int com_facebook_tooltip_bubble_view_text_body=0x7f090019;
+        public static final int com_facebook_tooltip_bubble_view_top_pointer=0x7f090017;
+        public static final int confirmButton=0x7f09001c;
+        public static final int createNew=0x7f090028;
+        public static final int display_always=0x7f090001;
+        public static final int greeting=0x7f090022;
+        public static final int gridview=0x7f09001d;
+        public static final int imageDisplay1=0x7f090012;
+        public static final int imageDisplay2=0x7f090013;
+        public static final int imageView1=0x7f09001f;
+        public static final int inline=0x7f09000d;
+        public static final int large=0x7f090003;
+        public static final int left=0x7f090010;
+        public static final int main_ui_container=0x7f090021;
+        public static final int messenger_send_button=0x7f090027;
+        public static final int nameText=0x7f09001b;
+        public static final int never_display=0x7f090002;
+        public static final int normal=0x7f090004;
+        public static final int open_graph=0x7f090006;
+        public static final int page=0x7f090007;
+        public static final int postPhotoButton=0x7f090025;
+        public static final int postStatusUpdateButton=0x7f090024;
+        public static final int profilePicture=0x7f090023;
+        public static final int right=0x7f090011;
+        public static final int small=0x7f090005;
+        public static final int standard=0x7f09000b;
+        public static final int top=0x7f09000e;
+        public static final int unknown=0x7f090008;
+        public static final int uploadExisting=0x7f090029;
+        public static final int uploadPhotoButton=0x7f090026;
     }
     public static final class layout {
-        public static final int album_create=0x7f030000;
-        public static final int com_facebook_activity_layout=0x7f030001;
-        public static final int com_facebook_login_fragment=0x7f030002;
-        public static final int com_facebook_tooltip_bubble=0x7f030003;
-        public static final int create_todo=0x7f030004;
-        public static final int gallery_custom=0x7f030005;
-        public static final int gallery_item=0x7f030006;
-        public static final int invite_friends=0x7f030007;
+        public static final int activity_view_photo=0x7f030000;
+        public static final int album_create=0x7f030001;
+        public static final int com_facebook_activity_layout=0x7f030002;
+        public static final int com_facebook_login_fragment=0x7f030003;
+        public static final int com_facebook_tooltip_bubble=0x7f030004;
+        public static final int create_todo=0x7f030005;
+        public static final int gallery_custom=0x7f030006;
+        public static final int gallery_item=0x7f030007;
         public static final int main=0x7f030008;
         public static final int messenger_button_send_blue_large=0x7f030009;
         public static final int messenger_button_send_blue_round=0x7f03000a;
@@ -259,7 +269,11 @@ containing a value of this type.
         public static final int messenger_button_send_white_small=0x7f03000e;
         public static final int photo_upload_options=0x7f03000f;
     }
+    public static final class menu {
+        public static final int view_photo=0x7f080000;
+    }
     public static final class string {
+        public static final int action_settings=0x7f04002c;
         public static final int app_id=0x7f040020;
         public static final int app_name=0x7f040011;
         public static final int cancelled=0x7f040013;
@@ -287,6 +301,7 @@ containing a value of this type.
         public static final int exception=0x7f040021;
         public static final int facebook_app_name=0x7f040012;
         public static final int hello_user=0x7f040016;
+        public static final int hello_world=0x7f04002b;
         public static final int menu_delete=0x7f040027;
         public static final int menu_insert=0x7f040023;
         public static final int messenger_send_button_text=0x7f040000;
@@ -300,6 +315,7 @@ containing a value of this type.
         public static final int status_update=0x7f04001a;
         public static final int success=0x7f040017;
         public static final int successfully_posted_post=0x7f040018;
+        public static final int title_activity_view_photo=0x7f04002a;
         public static final int upload_existing=0x7f040029;
         public static final int you_picked=0x7f04001c;
     }
