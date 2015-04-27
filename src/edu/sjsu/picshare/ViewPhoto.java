@@ -39,7 +39,7 @@ public class ViewPhoto extends Activity {
 		// as you specify a parent activity in AndroidManifest.xml.
 		int id = item.getItemId();
 		if (id == R.id.action_settings) {
-			return true;
+			//return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}

@@ -26,5 +26,6 @@
     <string name="menu_delete">Delete Todo</string>
     <string name="create_new">Create New Album</string>
     <string name="upload_existing">Upload To Existing Album</string>
+    <string name="action_settings">Settings</string>
 
 </resources>

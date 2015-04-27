@@ -35,12 +35,12 @@ public class UploadPhoto extends Activity {
 	}
 
 	private void onClickSelectPhoto() {
-		Intent intent = new Intent(this, CustomGallery.class);
+		Intent intent = new Intent(this, CreateAlbum.class);
 		startActivity(intent);
 	}
 
 	private void onClickPostPhoto() {
-		Intent intent = new Intent(this, CreateAlbum.class);
+		Intent intent = new Intent(this, CustomGallery.class);
 		startActivity(intent);
 	}
 
