@@ -30,5 +30,6 @@
     <string name="album_desc">Album Description:</string>
     <string name="create_album">Create Album</string>
     <string name="album_image">Album Image</string>
+    <string name="view_existing">Click To See Photos</string>
 
 </resources>
