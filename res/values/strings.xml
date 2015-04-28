@@ -21,11 +21,14 @@
     <string name="empty">There are no todo items.</string>
     <string name="menu_insert">Add Todo</string>
     <string name="name">Enter your todo</string>
-    <string name="confirm">Done</string>
-    <string name="create_todo">Create Todo</string>
+    <string name="confirm">Done</string>    
     <string name="menu_delete">Delete Todo</string>
     <string name="create_new">Create New Album</string>
     <string name="upload_existing">Upload To Existing Album</string>
     <string name="action_settings">Settings</string>
+    <string name="album_title">Album Title:</string>
+    <string name="album_desc">Album Description:</string>
+    <string name="create_album">Create Album</string>
+    <string name="album_image">Album Image</string>
 
 </resources>
