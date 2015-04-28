@@ -36,9 +36,15 @@
         </activity>
         <activity android:name=".CreateAlbum" >
         </activity>
-        <activity android:name=".ViewPhoto" >
-        </activity>
-        <activity android:name=".SendInviteAcitvity" >
+      <activity android:name=".MemoryCache"></activity>
+		<activity android:name=".ImageLoader"></activity>
+		<activity android:name=".FileCache"></activity>
+		<activity android:name=".ImageList"></activity>	
+		<activity android:name=".SingleItemView"></activity>
+		<activity android:name=".Utils"></activity>
+
+		<activity android:name=".GridViewAdapter"></activity>
+          <activity android:name=".SendInviteAcitvity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
