@@ -6,6 +6,7 @@ import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -40,6 +41,8 @@ public class CustomGallery extends Activity {
 	private ImageAdapter imageAdapter;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	private Button UploadToAlbum;
+	private Button viewPhotos;
+
 	Bitmap thumbnail = null;
 
 	@Override
@@ -47,6 +50,7 @@ public class CustomGallery extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.gallery_custom);
 		UploadToAlbum = (Button) findViewById(R.id.button1);
+		
 		final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
 		final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
 
@@ -101,12 +105,13 @@ public class CustomGallery extends Activity {
 					ParseFile file = new ParseFile(displayName, byteArrayImage);
 					// Upload the image into Parse Cloud
 					file.saveInBackground();
+					String albumName = getIntent().getExtras().getString("albumName");
 
 					// Create a New Class called "ImageUpload" in Parse
 					ParseObject imgupload = new ParseObject("ImageUpload");
 
 					// Create a column named "ImageName" and set the string
-					String albumName = getIntent().getExtras().getString("albumName");
+					
 					imgupload.put("AlbumName", albumName);
 
 					// Create a column named "ImageName" and set the string
@@ -126,6 +131,27 @@ public class CustomGallery extends Activity {
 				System.out.println("retrieving....");
 			}
 		});
+		
+		
+	
+	viewPics();
+		
+	}
+
+	private void viewPics() {
+		// TODO Auto-generated method stub
+		viewPhotos = (Button) findViewById(R.id.viewSavedPhotos);
+
+		viewPhotos.setOnClickListener(new View.OnClickListener() {
+			public void onClick(View view) {
+				String albumName = getIntent().getExtras().getString("albumName");
+			Intent intent = new Intent(CustomGallery.this, FetchImages.class);  
+			intent.putExtra("albumname", albumName);
+				startActivity(intent);
+				//System.out.println("in view method");
+			}
+		});
+		
 	}
 
 	@Override

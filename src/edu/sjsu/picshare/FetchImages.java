@@ -52,10 +52,14 @@ public class FetchImages extends Activity {
 			imageArrayList = new ArrayList<ImageList>();
 			try {
 				// Locate the class table named "SamsungPhones" in Parse.com
+				String albumName = getIntent().getExtras().getString("albumname");
+				System.out.println(albumName);
 				ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
 						"ImageUpload");
 				// Locate the column named "position" in Parse.com and order list
 				// by ascending
+		        query.whereEqualTo("AlbumName",albumName);
+
 				query.orderByAscending("position");
 				ob = query.find();
 				for (ParseObject country : ob) {

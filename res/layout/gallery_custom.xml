@@ -14,13 +14,21 @@
         android:stretchMode="columnWidth"
         android:layout_above="@+id/button1"
         android:verticalSpacing="2dip" />
- 
-    <Button
-        android:id="@+id/button1"
-        android:layout_alignParentBottom="true"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:text="Upload Photos To Album" />
+
+      <Button
+          android:id="@+id/button1"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_above="@+id/viewSavedPhotos"
+          android:layout_centerHorizontal="true"
+          android:text="Upload Photos To Album" />
+
+      <Button
+          android:id="@+id/viewSavedPhotos"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentBottom="true"
+          android:layout_centerHorizontal="true"
+          android:text="View Existing Photos" />
  
 </RelativeLayout>
