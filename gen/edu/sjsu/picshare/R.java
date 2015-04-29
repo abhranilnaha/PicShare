@@ -206,7 +206,7 @@ containing a value of this type.
         public static final int spinner=0x7f02001e;
     }
     public static final class id {
-        public static final int action_settings=0x7f040038;
+        public static final int action_settings=0x7f040039;
         public static final int albumDesc=0x7f040015;
         public static final int albumTitle=0x7f040013;
         public static final int automatic=0x7f040000;
@@ -215,7 +215,7 @@ containing a value of this type.
         public static final int button=0x7f04000a;
         public static final int button1=0x7f040024;
         public static final int center=0x7f04000f;
-        public static final int checkBox1=0x7f040027;
+        public static final int checkBox1=0x7f040028;
         public static final int com_facebook_body_frame=0x7f04001d;
         public static final int com_facebook_button_xout=0x7f04001f;
         public static final int com_facebook_fragment_container=0x7f04001b;
@@ -223,34 +223,35 @@ containing a value of this type.
         public static final int com_facebook_tooltip_bubble_view_bottom_pointer=0x7f040021;
         public static final int com_facebook_tooltip_bubble_view_text_body=0x7f040020;
         public static final int com_facebook_tooltip_bubble_view_top_pointer=0x7f04001e;
-        public static final int createNew=0x7f040034;
+        public static final int createNew=0x7f040035;
         public static final int display_always=0x7f040001;
-        public static final int friends=0x7f040029;
-        public static final int greeting=0x7f04002c;
+        public static final int friends=0x7f04002a;
+        public static final int greeting=0x7f04002d;
         public static final int grid_albums=0x7f040017;
         public static final int gridview=0x7f040023;
         public static final int image=0x7f040018;
-        public static final int imageView1=0x7f040026;
+        public static final int imageView1=0x7f040027;
         public static final int inline=0x7f04000d;
-        public static final int inviteFriendsButton=0x7f040031;
-        public static final int label=0x7f04002a;
+        public static final int inviteFriendsButton=0x7f040032;
+        public static final int label=0x7f04002b;
         public static final int large=0x7f040005;
         public static final int left=0x7f040010;
         public static final int list_albums=0x7f04001a;
         public static final int listview=0x7f040022;
-        public static final int main_ui_container=0x7f04002b;
-        public static final int messenger_send_button=0x7f040033;
-        public static final int mygridimage=0x7f040028;
-        public static final int mysingleimage=0x7f040037;
+        public static final int main_ui_container=0x7f04002c;
+        public static final int messenger_send_button=0x7f040034;
+        public static final int mygridimage=0x7f040029;
+        public static final int mysingleimage=0x7f040038;
         public static final int never_display=0x7f040002;
         public static final int normal=0x7f040004;
         public static final int open_graph=0x7f040007;
         public static final int page=0x7f040008;
-        public static final int postPhotoButton=0x7f04002f;
-        public static final int postStatusUpdateButton=0x7f04002e;
-        public static final int profilePicture=0x7f04002d;
+        public static final int postPhotoButton=0x7f040030;
+        public static final int postStatusUpdateButton=0x7f04002f;
+        public static final int profilePicture=0x7f04002e;
         public static final int right=0x7f040011;
         public static final int saveAlbum=0x7f040016;
+        public static final int shareWithFriends=0x7f040026;
         public static final int small=0x7f040003;
         public static final int standard=0x7f040009;
         public static final int textView1=0x7f040012;
@@ -258,10 +259,10 @@ containing a value of this type.
         public static final int title=0x7f040019;
         public static final int top=0x7f04000e;
         public static final int unknown=0x7f040006;
-        public static final int uploadExisting=0x7f040035;
-        public static final int uploadPhotoButton=0x7f040030;
-        public static final int viewFriendsButton=0x7f040032;
-        public static final int viewPhotos=0x7f040036;
+        public static final int uploadExisting=0x7f040036;
+        public static final int uploadPhotoButton=0x7f040031;
+        public static final int viewFriendsButton=0x7f040033;
+        public static final int viewPhotos=0x7f040037;
         public static final int viewSavedPhotos=0x7f040025;
     }
     public static final class layout {

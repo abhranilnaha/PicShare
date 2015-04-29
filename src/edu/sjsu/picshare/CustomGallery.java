@@ -43,6 +43,7 @@ public class CustomGallery extends Activity {
 	private Button UploadToAlbum;
 	String email;
 	private Button viewPhotos;
+	private Button shareAlbum;
 
 	Bitmap thumbnail = null;
 
@@ -144,12 +145,27 @@ public class CustomGallery extends Activity {
 		// TODO Auto-generated method stub
 		viewPhotos = (Button) findViewById(R.id.viewSavedPhotos);
 
-		viewPhotos.setOnClickListener(new View.OnClickListener() {
+		viewPhotos.setOnClickListener(new View.OnClickListener() 
+		{
 			public void onClick(View view) {
 				String albumName = getIntent().getExtras().getString("albumName");
 			Intent intent = new Intent(CustomGallery.this, FetchImages.class);  
 			intent.putExtra("albumname", albumName);
-			intent.putExtra("email",email);
+			
+				startActivity(intent);
+				//System.out.println("in view method");
+			}
+		});
+		
+		shareAlbum = (Button) findViewById(R.id.shareWithFriends);
+		viewPhotos.setOnClickListener(new View.OnClickListener() 
+		{
+			public void onClick(View view) {
+				String albumName = getIntent().getExtras().getString("albumName");
+			Intent intent = new Intent(CustomGallery.this, ShareAlbum.class);  
+			intent.putExtra("albumname", albumName);
+			intent.putExtra("email", email);
+			
 				startActivity(intent);
 				//System.out.println("in view method");
 			}

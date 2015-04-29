@@ -30,5 +30,13 @@
           android:layout_alignParentBottom="true"
           android:layout_centerHorizontal="true"
           android:text="View Existing Photos" />
+      
+      <Button
+          android:id="@+id/shareWithFriends"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_alignParentBottom="true"
+          android:layout_centerHorizontal="true"
+          android:text="Share With Friends" />
  
 </RelativeLayout>

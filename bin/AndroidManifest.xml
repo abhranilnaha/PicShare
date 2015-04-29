@@ -50,6 +50,9 @@
         </activity>
         <activity android:name=".FriendsListActivity" >
         </activity>
+        <activity android:name=".ShareAlbum" >
+        </activity>
+        
         <activity android:name=".SendInviteAcitvity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />

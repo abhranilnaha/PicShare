@@ -55,6 +55,8 @@ public class FetchImages extends Activity {
 			try {
 				// Locate the class table named "SamsungPhones" in Parse.com
 				String albumName = getIntent().getExtras().getString("albumname");
+				
+				
 				ParseQuery<ParseObject> query = new ParseQuery<ParseObject>(
 						"ImageUpload");
 				// Locate the column named "position" in Parse.com and order list
@@ -76,8 +78,7 @@ public class FetchImages extends Activity {
 		}
 
 		@Override
-		protected void onPostExecute(Void result) 
-		{
+		protected void onPostExecute(Void result) {
 			// Locate the gridview in gridview_main.xml
 			gridview = (GridView) findViewById(R.id.gridview);
 			// Pass the results into ListViewAdapter.java
