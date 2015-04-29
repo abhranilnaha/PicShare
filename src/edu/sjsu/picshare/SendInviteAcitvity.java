@@ -63,19 +63,6 @@ public class SendInviteAcitvity extends Activity
 	}
 	
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	/*@Override
     public void onCreate(Bundle savedInstanceState) 
 	{

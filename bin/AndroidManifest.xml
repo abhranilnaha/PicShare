@@ -4,7 +4,7 @@
     android:versionCode="1"
     android:versionName="1.0" >
 
-    <uses-sdk android:minSdkVersion="15" />
+    <uses-sdk android:minSdkVersion="17" />
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -12,9 +12,9 @@
 
     <application
         android:name=".PicShareApplication"
+        android:allowBackup="true"
         android:icon="@drawable/icon"
-        android:label="@string/app_name"        
-        android:allowBackup="true" >
+        android:label="@string/app_name" >
         <activity
             android:name="edu.sjsu.picshare.MainActivity"
             android:label="@string/app_name"
@@ -30,22 +30,37 @@
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity
-            android:name=".ToDoListActivity"
-            android:label="@string/app_name" >
+        <activity android:name=".UploadPhoto" >
+        </activity>
+        <activity android:name=".CustomGallery" >
+        </activity>
+        <activity android:name=".CreateAlbum" >
+        </activity>
+        <activity android:name=".AlbumListDisplay" >
+        </activity>
+        <activity android:name=".MemoryCache" >
+        </activity>
+        <activity android:name=".ImageLoader" >
+        </activity>
+        <activity android:name=".SingleItemView" >
+        </activity>
+        <activity android:name=".FetchImages" >
+        </activity>
+        <activity android:name=".GridViewAdapter" >
+        </activity>
+        <activity android:name=".FriendsListActivity" >
+        </activity>
+        <activity android:name=".SendInviteAcitvity" >
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="https://fb.me/529292150554209" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateTodoActivity" />
-		<activity android:name=".SendInviteAcitvity" >
-		    <intent-filter>
-    			<action android:name="android.intent.action.VIEW" />
-    			<category android:name="android.intent.category.DEFAULT" />
-    			<category android:name="android.intent.category.BROWSABLE" />
-    			<data android:scheme="https://fb.me/529292150554209" />
-			</intent-filter>
-        </activity>
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
