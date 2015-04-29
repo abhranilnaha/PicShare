@@ -1,9 +1,15 @@
 package edu.sjsu.picshare;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Locale;
+import java.util.Set;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -13,10 +19,10 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.View;
@@ -29,6 +35,9 @@ import com.facebook.FacebookAuthorizationException;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphRequestBatch;
+import com.facebook.GraphResponse;
 import com.facebook.Profile;
 import com.facebook.ProfileTracker;
 import com.facebook.appevents.AppEventsLogger;
@@ -45,13 +54,7 @@ import com.facebook.share.widget.ShareDialog;
 public class MainActivity extends FragmentActivity {
 
 	private static final String PERMISSION = "publish_actions";
-	private static final Location SEATTLE_LOCATION = new Location("") {
-		{
-			setLatitude(47.6097);
-			setLongitude(-122.3331);
-		}
-	};
-
+	
 	private final String PENDING_ACTION_BUNDLE_KEY = "edu.sjsu.picshare:PendingAction";
 
 	private Button postStatusUpdateButton;
@@ -86,8 +89,7 @@ public class MainActivity extends FragmentActivity {
 			if (result.getPostId() != null) {
 				String title = getString(R.string.success);
 				String id = result.getPostId();
-				String alertMessage = getString(
-						R.string.successfully_posted_post, id);
+				String alertMessage = getString(R.string.successfully_posted_post, id);
 				showResult(title, alertMessage);
 			}
 		}
@@ -108,8 +110,8 @@ public class MainActivity extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 
 		try {
-			PackageInfo info = getPackageManager().getPackageInfo(
-					"edu.sjsu.picshare", PackageManager.GET_SIGNATURES);
+			PackageInfo info = getPackageManager().getPackageInfo("edu.sjsu.picshare", 
+					PackageManager.GET_SIGNATURES);
 			for (Signature signature : info.signatures) {
 				MessageDigest md = MessageDigest.getInstance("SHA");
 				md.update(signature.toByteArray());
@@ -145,8 +147,8 @@ public class MainActivity extends FragmentActivity {
 
 					@Override
 					public void onError(FacebookException exception) {
-						if (pendingAction != PendingAction.NONE
-								&& exception instanceof FacebookAuthorizationException) {
+						if (pendingAction != PendingAction.NONE && exception 
+								instanceof FacebookAuthorizationException) {
 							showAlert();
 							pendingAction = PendingAction.NONE;
 						}
@@ -165,8 +167,7 @@ public class MainActivity extends FragmentActivity {
 		shareDialog.registerCallback(callbackManager, shareCallback);
 
 		if (savedInstanceState != null) {
-			String name = savedInstanceState
-					.getString(PENDING_ACTION_BUNDLE_KEY);
+			String name = savedInstanceState.getString(PENDING_ACTION_BUNDLE_KEY);
 			pendingAction = PendingAction.valueOf(name);
 		}
 
@@ -174,12 +175,8 @@ public class MainActivity extends FragmentActivity {
 
 		profileTracker = new ProfileTracker() {
 			@Override
-			protected void onCurrentProfileChanged(Profile oldProfile,
-					Profile currentProfile) {
+			protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
 				updateUI();
-				// It's possible that we were waiting for Profile to be
-				// populated in order to
-				// post a status update.
 				handlePendingAction();
 			}
 		};
@@ -214,30 +211,20 @@ public class MainActivity extends FragmentActivity {
 			@Override
 			public void onClick(View v) {
 				onClickViewFriends();
-
 			}
-
 		});
 
 		// Can we present the share dialog for regular links?
 		canPresentShareDialog = ShareDialog.canShow(ShareLinkContent.class);
 
 		// Can we present the share dialog for photos?
-		canPresentShareDialogWithPhotos = ShareDialog
-				.canShow(SharePhotoContent.class);
+		canPresentShareDialogWithPhotos = ShareDialog.canShow(SharePhotoContent.class);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-
-		// Call the 'activateApp' method to log an app event for use in
-		// analytics and advertising
-		// reporting. Do so in the onResume methods of the primary Activities
-		// that an app may be
-		// launched into.
 		AppEventsLogger.activateApp(this);
-
 		updateUI();
 	}
 
@@ -257,12 +244,6 @@ public class MainActivity extends FragmentActivity {
 	@Override
 	public void onPause() {
 		super.onPause();
-
-		// Call the 'deactivateApp' method to log an app event for use in
-		// analytics and advertising
-		// reporting. Do so in the onPause methods of the primary Activities
-		// that an app may be
-		// launched into.
 		AppEventsLogger.deactivateApp(this);
 	}
 
@@ -275,27 +256,22 @@ public class MainActivity extends FragmentActivity {
 	private void updateUI() {
 		boolean enableButtons = AccessToken.getCurrentAccessToken() != null;
 
-		postStatusUpdateButton.setEnabled(enableButtons
-				|| canPresentShareDialog);
-		postPhotoButton.setEnabled(enableButtons
-				|| canPresentShareDialogWithPhotos);
+		postStatusUpdateButton.setEnabled(enableButtons	|| canPresentShareDialog);
+		postPhotoButton.setEnabled(enableButtons || canPresentShareDialogWithPhotos);
 
 		Profile profile = Profile.getCurrentProfile();
 		if (enableButtons && profile != null) {
 			profilePictureView.setProfileId(profile.getId());
-			greeting.setText(getString(R.string.hello_user,
-					profile.getFirstName()));
+			greeting.setText(getString(R.string.hello_user,	profile.getFirstName()));
 		} else {
 			profilePictureView.setProfileId(null);
 			greeting.setText(null);
 		}
+		//loadUserData();
 	}
 
 	private void handlePendingAction() {
-		PendingAction previouslyPendingAction = pendingAction;
-		// These actions may re-set pendingAction if they are still pending, but
-		// we assume they
-		// will succeed.
+		PendingAction previouslyPendingAction = pendingAction;		
 		pendingAction = PendingAction.NONE;
 
 		switch (previouslyPendingAction) {
@@ -324,10 +300,8 @@ public class MainActivity extends FragmentActivity {
 		Profile profile = Profile.getCurrentProfile();
 		ShareLinkContent linkContent = new ShareLinkContent.Builder()
 				.setContentTitle("Hello Facebook")
-				.setContentDescription(
-						"The 'Hello Facebook' sample  showcases simple Facebook integration")
-				.setContentUrl(
-						Uri.parse("http://developers.facebook.com/docs/android"))
+				.setContentDescription("The 'Hello Facebook' sample  showcases simple Facebook integration")
+				.setContentUrl(Uri.parse("http://developers.facebook.com/docs/android"))
 				.build();
 		if (canPresentShareDialog) {
 			shareDialog.show(linkContent);
@@ -344,20 +318,16 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	private void onClickPostPhoto() {
-		performPublish(PendingAction.POST_PHOTO,
-				canPresentShareDialogWithPhotos);
+		performPublish(PendingAction.POST_PHOTO, canPresentShareDialogWithPhotos);
 	}
 
 	private void postPhoto() {
-		Bitmap image = BitmapFactory.decodeResource(this.getResources(),
-				R.drawable.icon);
-		SharePhoto sharePhoto = new SharePhoto.Builder().setBitmap(image)
-				.build();
+		Bitmap image = BitmapFactory.decodeResource(this.getResources(), R.drawable.icon);
+		SharePhoto sharePhoto = new SharePhoto.Builder().setBitmap(image).build();
 		ArrayList<SharePhoto> photos = new ArrayList<SharePhoto>();
 		photos.add(sharePhoto);
 
-		SharePhotoContent sharePhotoContent = new SharePhotoContent.Builder()
-				.setPhotos(photos).build();
+		SharePhotoContent sharePhotoContent = new SharePhotoContent.Builder().setPhotos(photos).build();
 		if (canPresentShareDialogWithPhotos) {
 			shareDialog.show(sharePhotoContent);
 		} else if (hasPublishPermission()) {
@@ -369,8 +339,7 @@ public class MainActivity extends FragmentActivity {
 
 	private boolean hasPublishPermission() {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
-		return accessToken != null
-				&& accessToken.getPermissions().contains("publish_actions");
+		return accessToken != null && accessToken.getPermissions().contains("publish_actions");
 	}
 
 	private void performPublish(PendingAction action, boolean allowNoToken) {
@@ -384,8 +353,7 @@ public class MainActivity extends FragmentActivity {
 			} else {
 				// We need to get new permissions, then complete the action when
 				// we get called back.
-				LoginManager.getInstance().logInWithPublishPermissions(this,
-						Arrays.asList(PERMISSION));
+				LoginManager.getInstance().logInWithPublishPermissions(this, Arrays.asList(PERMISSION));
 				return;
 			}
 		}
@@ -395,4 +363,44 @@ public class MainActivity extends FragmentActivity {
 			handlePendingAction();
 		}
 	}
+	
+	public void loadUserData() {
+		AccessToken accessToken = AccessToken.getCurrentAccessToken();
+		if (accessToken == null)
+			return;
+        GraphRequest request = GraphRequest.newGraphPathRequest(accessToken, "me/taggable_friends", null);
+
+        HashSet<String> extraFields = new HashSet<String>();
+        Set<String> fields = new HashSet<String>(extraFields);
+        String[] requiredFields = new String[]{"id", "name"};
+        fields.addAll(Arrays.asList(requiredFields));
+        fields.add(String.format(Locale.US, "picture.height(%d).width(%d)", 50, 50));
+
+        Bundle parameters = request.getParameters();
+        parameters.putString("fields", TextUtils.join(",", fields));
+        request.setParameters(parameters);
+
+        request.setCallback(new GraphRequest.Callback() {
+            @Override
+            public void onCompleted(GraphResponse response) {
+            	JSONArray data = response.getJSONObject().optJSONArray("data");            	
+            }
+        });
+        
+        final GraphRequestBatch batch = new GraphRequestBatch(request);
+        GraphRequest.executeBatchAsync(batch);
+        
+        GraphRequest myRequest = GraphRequest.newMeRequest(
+                accessToken,
+                new GraphRequest.GraphJSONObjectCallback() {
+                    @Override
+                    public void onCompleted(JSONObject object, GraphResponse response) {
+                        
+                    }
+                });
+        Bundle params = new Bundle();
+        params.putString("fields", "id,name,link,email,gender,birthday");
+        myRequest.setParameters(params);
+        myRequest.executeAsync();
+    }
 }

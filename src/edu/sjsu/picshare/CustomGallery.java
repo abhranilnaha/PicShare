@@ -31,8 +31,10 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 public class CustomGallery extends Activity {
 
@@ -42,14 +44,17 @@ public class CustomGallery extends Activity {
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	private Button UploadToAlbum;
 	private Button viewPhotos;
-
+	private String albumName;
 	Bitmap thumbnail = null;
-
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		albumName = getIntent().getExtras().getString("albumName");
+		setTitle(String.format(getResources().getString(R.string.album), albumName));
 		setContentView(R.layout.gallery_custom);
-		UploadToAlbum = (Button) findViewById(R.id.button1);
+		UploadToAlbum = (Button) findViewById(R.id.uploadToAlbum);
 		
 		final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
 		final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
@@ -77,7 +82,7 @@ public class CustomGallery extends Activity {
 		GridView gridView = (GridView) findViewById(R.id.gridview);
 		gridView.setAdapter(imageAdapter);
 		UploadToAlbum.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
+			public void onClick(View view) {				
 				ArrayList<String> selectedItems = imageAdapter.getCheckedItems();
 				for (int i = 0; i < selectedItems.size(); i++) {
 					imagecursor.moveToPosition(i);
@@ -104,31 +109,36 @@ public class CustomGallery extends Activity {
 					// Create the ParseFile
 					ParseFile file = new ParseFile(displayName, byteArrayImage);
 					// Upload the image into Parse Cloud
-					file.saveInBackground();
-					String albumName = getIntent().getExtras().getString("albumName");
+					file.saveInBackground();					
 
 					// Create a New Class called "ImageUpload" in Parse
 					ParseObject imgupload = new ParseObject("ImageUpload");
 
-					// Create a column named "ImageName" and set the string
-					
+					// Create a column named "ImageName" and set the string					
 					imgupload.put("AlbumName", albumName);
 
 					// Create a column named "ImageName" and set the string
 					imgupload.put("ImageName", displayName);
 
 					// Create a column named "ImageFile" and insert the image
-					imgupload.put("ImageFile", file);
+					imgupload.put("ImageFile", file);				
 
 					// Create the class and the columns
-					imgupload.saveInBackground();
+					imgupload.saveInBackground(new SaveCallback() {
+						public void done(ParseException e) {
+							if (e == null) {
+								Intent intent = new Intent(CustomGallery.this, FetchImages.class);  
+								intent.putExtra("albumName", albumName);
+								startActivity(intent);
+							}
+						}
+					});
 
 					// Show a simple toast message
 					Toast.makeText(CustomGallery.this, i + 1 + " Image Uploaded", Toast.LENGTH_SHORT).show();
 				}
+				
 				Toast.makeText(CustomGallery.this, "Upload Completed", Toast.LENGTH_SHORT).show();
-				System.out.println("images uploaded");
-				System.out.println("retrieving....");
 			}
 		});
 		
@@ -138,17 +148,15 @@ public class CustomGallery extends Activity {
 		
 	}
 
-	private void viewPics() {
-		// TODO Auto-generated method stub
+	private void viewPics() {		
 		viewPhotos = (Button) findViewById(R.id.viewSavedPhotos);
 
 		viewPhotos.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				String albumName = getIntent().getExtras().getString("albumName");
-			Intent intent = new Intent(CustomGallery.this, FetchImages.class);  
-			intent.putExtra("albumname", albumName);
-				startActivity(intent);
-				//System.out.println("in view method");
+				Intent intent = new Intent(CustomGallery.this, FetchImages.class);  
+				intent.putExtra("albumName", albumName);
+				startActivity(intent);				
 			}
 		});
 		

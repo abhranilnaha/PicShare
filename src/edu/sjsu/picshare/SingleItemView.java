@@ -12,6 +12,7 @@ public class SingleItemView extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		// Get the view from singleitemview.xml
 		setContentView(R.layout.singleitemview);
  

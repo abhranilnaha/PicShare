@@ -12,16 +12,16 @@
         android:horizontalSpacing="4dip"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
-        android:layout_above="@+id/button1"
+        android:layout_above="@+id/uploadToAlbum"
         android:verticalSpacing="2dip" />
 
       <Button
-          android:id="@+id/button1"
+          android:id="@+id/uploadToAlbum"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:layout_above="@+id/viewSavedPhotos"
           android:layout_centerHorizontal="true"
-          android:text="Upload Photos To Album" />
+          android:text="@string/upload_album_photos" />
 
       <Button
           android:id="@+id/viewSavedPhotos"
@@ -29,6 +29,6 @@
           android:layout_height="wrap_content"
           android:layout_alignParentBottom="true"
           android:layout_centerHorizontal="true"
-          android:text="View Existing Photos" />
+          android:text="@string/view_existing_photos" />
  
 </RelativeLayout>

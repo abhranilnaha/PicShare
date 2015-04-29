@@ -19,6 +19,7 @@ public class SendInviteAcitvity extends Activity
     public void onCreate(Bundle savedInstanceState) 
 	{
         super.onCreate(savedInstanceState);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.invite_friends);
         System.out.println("Inside SendInviteAcitvity");
         FacebookSdk.sdkInitialize(this.getApplicationContext());

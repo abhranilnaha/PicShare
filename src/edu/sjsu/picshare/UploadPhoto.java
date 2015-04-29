@@ -17,14 +17,14 @@ import android.widget.Toast;
 
 public class UploadPhoto extends Activity {
 	
-	 private static int RESULT_LOAD_IMG = 1;
-	 private Button createNewAlbum;
-	 private Button uploadtToExisting;
-	 private Button viewPhotos;
+	private static int RESULT_LOAD_IMG = 1;
+	private Button createNewAlbum;
+	private Button uploadtToExisting;	 
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.photo_upload_options);
 	     
 		createNewAlbum = (Button) findViewById(R.id.createNew);
@@ -35,19 +35,12 @@ public class UploadPhoto extends Activity {
 			   
         });    
 	    
-		uploadtToExisting = (Button) findViewById(R.id.uploadExisting);
+		uploadtToExisting = (Button) findViewById(R.id.viewAlbums);
 		uploadtToExisting.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                onClickPostPhoto();
             }
-        }); 
-		viewPhotos = (Button) findViewById(R.id.viewPhotos);
-		viewPhotos.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View view) {
-               onClickViewPhoto();
-            }
-        }); 
-		
+        });
 	}
 	private void onClickSelectPhoto() {
     	Intent intent = new Intent(this, CreateAlbum.class);        

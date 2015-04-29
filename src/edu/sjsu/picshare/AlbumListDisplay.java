@@ -24,6 +24,8 @@ public class AlbumListDisplay extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		setTitle(R.string.view_albums);
 		setContentView(R.layout.album_grid);
 		albums = new ArrayList<Album>();
 		gvAlbums = (GridView) findViewById(R.id.grid_albums);
