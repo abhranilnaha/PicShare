@@ -10,13 +10,13 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-public class UploadPhoto extends Activity {
-	
+public class UploadPhoto extends Activity {	
 	private static int RESULT_LOAD_IMG = 1;
 	private Button createNewAlbum;
 	private Button uploadtToExisting;
@@ -47,6 +47,19 @@ public class UploadPhoto extends Activity {
             }
         });
 	}
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
+	
 	private void onClickSelectPhoto() {
     	Intent intent = new Intent(this, CreateAlbum.class);
     	intent.putExtra("email",email);

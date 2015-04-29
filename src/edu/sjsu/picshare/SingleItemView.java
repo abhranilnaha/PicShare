@@ -2,6 +2,7 @@ package edu.sjsu.picshare;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
  
 public class SingleItemView extends Activity {
@@ -26,4 +27,16 @@ public class SingleItemView extends Activity {
 		// Load image into the ImageView
 		imageLoader.DisplayImage(myImage, imgphone);
 	}
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 }

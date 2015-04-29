@@ -1,4 +1,5 @@
 package edu.sjsu.picshare;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
@@ -29,37 +31,58 @@ public class FetchImages extends Activity {
 	GridViewAdapter adapter;
 	private List<ImageList> imageArrayList = null;
 	private String albumName;
-		
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		albumName = getIntent().getExtras().getString("albumName");
-		setTitle(String.format(getResources().getString(R.string.album), albumName));		
+		setTitle(String.format(getResources().getString(R.string.album),
+				albumName));
 		// Get the view from gridview_main.xml
 		setContentView(R.layout.gridview_main);
-		
-		((Button)findViewById(R.id.shareAlbum)).setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {
-				Intent intent = new Intent(FetchImages.this, FetchImages.class);
-				intent.putExtra("albumName", albumName);
-			    PendingIntent pendingIntent = PendingIntent.getActivity(FetchImages.this, 0, intent, 0);
-			    
-			    Profile profile = Profile.getCurrentProfile();
-			    Notification notification = new Notification.Builder(FetchImages.this)
-			        .setContentTitle(profile.getName() + " has shared an album: " + albumName)
-			        .setSmallIcon(R.drawable.icon).setContentIntent(pendingIntent).build();
-			    NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-			    // hide the notification after its selected
-			    notification.flags |= Notification.FLAG_AUTO_CANCEL;
 
-			    notificationManager.notify(0, notification);
-			}
-		});	
-		
+		((Button) findViewById(R.id.shareAlbum))
+				.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View view) {
+						Intent intent = new Intent(FetchImages.this,
+								FetchImages.class);
+						intent.putExtra("albumName", albumName);
+						PendingIntent pendingIntent = PendingIntent
+								.getActivity(FetchImages.this, 0, intent, 0);
+
+						Profile profile = Profile.getCurrentProfile();
+						Notification notification = new Notification.Builder(
+								FetchImages.this)
+								.setContentTitle(
+										profile.getName()
+												+ " has shared an album: "
+												+ albumName)
+								.setSmallIcon(R.drawable.icon)
+								.setContentIntent(pendingIntent).build();
+						NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+						// hide the notification after its selected
+						notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+						notificationManager.notify(0, notification);
+					}
+				});
+
 		// Execute RemoteDataTask AsyncTask
 		new RemoteDataTask().execute();
 	}
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 
 	// RemoteDataTask AsyncTask
 	private class RemoteDataTask extends AsyncTask<Void, Void, Void> {
@@ -83,12 +106,13 @@ public class FetchImages extends Activity {
 			imageArrayList = new ArrayList<ImageList>();
 			try {
 				// Locate the class table named "SamsungPhones" in Parse.com
-				
+
 				System.out.println(albumName);
 				ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("ImageUpload");
-				// Locate the column named "position" in Parse.com and order list
+				// Locate the column named "position" in Parse.com and order
+				// list
 				// by ascending
-		        query.whereEqualTo("AlbumName",albumName);
+				query.whereEqualTo("AlbumName", albumName);
 
 				query.orderByAscending("position");
 				ob = query.find();

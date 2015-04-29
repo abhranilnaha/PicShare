@@ -17,6 +17,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -47,28 +48,31 @@ public class CustomGallery extends Activity {
 	private String albumName;
 	private String email;
 	Bitmap thumbnail = null;
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		albumName = getIntent().getExtras().getString("albumName");
 		email = getIntent().getExtras().getString("email");
-		setTitle(String.format(getResources().getString(R.string.album), albumName));
+		setTitle(String.format(getResources().getString(R.string.album),
+				albumName));
 		setContentView(R.layout.gallery_custom);
 		UploadToAlbum = (Button) findViewById(R.id.uploadToAlbum);
-		
+
 		final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
 		final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
 
-		final Cursor imagecursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
-				columns, null, null, orderBy + " DESC");
+		final Cursor imagecursor = managedQuery(
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
+				null, orderBy + " DESC");
 
 		this.imageUrls = new ArrayList<String>();
 
 		for (int i = 0; i < imagecursor.getCount(); i++) {
 			imagecursor.moveToPosition(i);
-			int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
+			int dataColumnIndex = imagecursor
+					.getColumnIndex(MediaStore.Images.Media.DATA);
 			imageUrls.add(imagecursor.getString(dataColumnIndex));
 
 			System.out.println("=====> Array path => " + imageUrls.get(i));
@@ -84,7 +88,7 @@ public class CustomGallery extends Activity {
 		GridView gridView = (GridView) findViewById(R.id.gridview);
 		gridView.setAdapter(imageAdapter);
 		UploadToAlbum.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) {				
+			public void onClick(View view) {
 				ArrayList<String> selectedItems = imageAdapter.getCheckedItems();
 				for (int i = 0; i < selectedItems.size(); i++) {
 					imagecursor.moveToPosition(i);
@@ -102,7 +106,7 @@ public class CustomGallery extends Activity {
 					Bitmap bm = BitmapFactory.decodeFile(selectedItems.get(i));
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-					
+
 					byte[] byteArrayImage = baos.toByteArray();
 					// converting image into Base64
 					String encodedImage = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
@@ -111,25 +115,26 @@ public class CustomGallery extends Activity {
 					// Create the ParseFile
 					ParseFile file = new ParseFile(displayName, byteArrayImage);
 					// Upload the image into Parse Cloud
-					file.saveInBackground();					
+					file.saveInBackground();
 
 					// Create a New Class called "ImageUpload" in Parse
 					ParseObject imgupload = new ParseObject("ImageUpload");
 
-					// Create a column named "ImageName" and set the string					
+					// Create a column named "ImageName" and set the string
 					imgupload.put("AlbumName", albumName);
 
 					// Create a column named "ImageName" and set the string
 					imgupload.put("ImageName", displayName);
 
 					// Create a column named "ImageFile" and insert the image
-					imgupload.put("ImageFile", file);				
+					imgupload.put("ImageFile", file);
 
 					// Create the class and the columns
 					imgupload.saveInBackground(new SaveCallback() {
 						public void done(ParseException e) {
 							if (e == null) {
-								Intent intent = new Intent(CustomGallery.this, FetchImages.class);  
+								Intent intent = new Intent(CustomGallery.this,
+										FetchImages.class);
 								intent.putExtra("albumName", albumName);
 								startActivity(intent);
 							}
@@ -139,31 +144,41 @@ public class CustomGallery extends Activity {
 					// Show a simple toast message
 					Toast.makeText(CustomGallery.this, i + 1 + " Image Uploaded", Toast.LENGTH_SHORT).show();
 				}
-				
-				Toast.makeText(CustomGallery.this, "Upload Completed", Toast.LENGTH_SHORT).show();
+
+				Toast.makeText(CustomGallery.this, "Upload Completed",
+						Toast.LENGTH_SHORT).show();
 			}
 		});
-		
-		
-	
-	viewPics();
-		
+
+		viewPics();
 	}
 
-	private void viewPics() {		
+	private void viewPics() {
 		viewPhotos = (Button) findViewById(R.id.viewSavedPhotos);
 
 		viewPhotos.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				String albumName = getIntent().getExtras().getString("albumName");
-				Intent intent = new Intent(CustomGallery.this, FetchImages.class);  
+				Intent intent = new Intent(CustomGallery.this, FetchImages.class);
 				intent.putExtra("albumName", albumName);
-				intent.putExtra("email",email);
-				startActivity(intent);				
+				intent.putExtra("email", email);
+				startActivity(intent);
 			}
 		});
-		
+
 	}
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 
 	@Override
 	protected void onStop() {
@@ -172,7 +187,6 @@ public class CustomGallery extends Activity {
 	}
 
 	public class ImageAdapter extends BaseAdapter {
-
 		ArrayList<String> mList;
 		LayoutInflater mInflater;
 		Context mContext;
@@ -185,7 +199,6 @@ public class CustomGallery extends Activity {
 			mSparseBooleanArray = new SparseBooleanArray();
 			mList = new ArrayList<String>();
 			this.mList = imageList;
-
 		}
 
 		public ArrayList<String> getCheckedItems() {
@@ -235,10 +248,10 @@ public class CustomGallery extends Activity {
 
 		OnCheckedChangeListener mCheckedChangeListener = new OnCheckedChangeListener() {
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
 				// TODO Auto-generated method stub
-				mSparseBooleanArray.put((Integer) buttonView.getTag(),
-						isChecked);
+				mSparseBooleanArray.put((Integer) buttonView.getTag(), isChecked);
 			}
 		};
 	}
