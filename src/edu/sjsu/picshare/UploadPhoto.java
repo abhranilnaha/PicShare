@@ -19,13 +19,18 @@ public class UploadPhoto extends Activity {
 	
 	private static int RESULT_LOAD_IMG = 1;
 	private Button createNewAlbum;
-	private Button uploadtToExisting;	 
+	private Button uploadtToExisting;
+	private String email;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.photo_upload_options);
+		
+		Intent intent = getIntent();
+		email = intent.getExtras().getString("email");
+		System.out.println("in UploadPhoto clas....User email is "+ email);
 	     
 		createNewAlbum = (Button) findViewById(R.id.createNew);
 		createNewAlbum.setOnClickListener(new View.OnClickListener() {
@@ -43,18 +48,21 @@ public class UploadPhoto extends Activity {
         });
 	}
 	private void onClickSelectPhoto() {
-    	Intent intent = new Intent(this, CreateAlbum.class);        
+    	Intent intent = new Intent(this, CreateAlbum.class);
+    	intent.putExtra("email",email);
         startActivity(intent);
     }
 	
 	private void onClickPostPhoto() {
-    	Intent intent = new Intent(this, AlbumListDisplay.class);        
+    	Intent intent = new Intent(this, AlbumListDisplay.class);
+    	intent.putExtra("email",email);
         startActivity(intent);
     }
 	public void onClickViewPhoto(){
 		Intent intent = new Intent(this, FetchImages.class);   
 		//intent.putExtra("image", retrievedImages);
 		System.out.println("in intent method");
+		intent.putExtra("email",email);
 		startActivity(intent);
     }
 }

@@ -29,7 +29,7 @@ public class FetchImages extends Activity {
 	GridViewAdapter adapter;
 	private List<ImageList> imageArrayList = null;
 	private String albumName;
-
+		
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);

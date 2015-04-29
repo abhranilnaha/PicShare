@@ -7,6 +7,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.parse.Parse;
 import com.parse.ParseCrashReporting;
+import com.parse.ParseFacebookUtils;
 
 public class PicShareApplication extends Application {
 
@@ -23,6 +24,8 @@ public class PicShareApplication extends Application {
 		// Add your initialization code here
 		Parse.initialize(this, "kw2g2J8LW9Le0Ot9BF7zmVW2rG7Pc8o5XF1F7Q58",
 				"9mqh78i9aIFHVvoqapnW6LdT8LG8V7Nif4JO0dZc");
+		
+		ParseFacebookUtils.initialize(this);
 
 		// ParseUser.enableAutomaticUser();
 		// ParseACL defaultACL = new ParseACL();

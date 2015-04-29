@@ -45,6 +45,7 @@ public class CustomGallery extends Activity {
 	private Button UploadToAlbum;
 	private Button viewPhotos;
 	private String albumName;
+	private String email;
 	Bitmap thumbnail = null;
 	
 	@Override
@@ -52,6 +53,7 @@ public class CustomGallery extends Activity {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		albumName = getIntent().getExtras().getString("albumName");
+		email = getIntent().getExtras().getString("email");
 		setTitle(String.format(getResources().getString(R.string.album), albumName));
 		setContentView(R.layout.gallery_custom);
 		UploadToAlbum = (Button) findViewById(R.id.uploadToAlbum);
@@ -156,6 +158,7 @@ public class CustomGallery extends Activity {
 				String albumName = getIntent().getExtras().getString("albumName");
 				Intent intent = new Intent(CustomGallery.this, FetchImages.class);  
 				intent.putExtra("albumName", albumName);
+				intent.putExtra("email",email);
 				startActivity(intent);				
 			}
 		});

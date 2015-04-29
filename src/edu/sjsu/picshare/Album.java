@@ -5,6 +5,15 @@ public class Album {
 	public String title;
 	public String desc;
 	public String imgUrl;
+	public String owner;
+
+	public String getOwner() {
+		return owner;
+	}
+
+	public void setOwner(String owner) {
+		this.owner = owner;
+	}
 
 	public Album(String title, String imgUrl) {
 		this.title = title;
