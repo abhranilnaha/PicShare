@@ -1,13 +1,23 @@
 package edu.sjsu.picshare;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.GridView;
 
+import com.facebook.Profile;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -21,15 +31,13 @@ public class FetchImages extends Activity {
 	GridViewAdapter adapter;
 	GridViewAdapter nameAdapter;
 	private List<ImageList> imageArrayList = null;
+	private String albumName;
+	private String email;
 	private List<ImageNameList> imageNameList = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// Get the view from gridview_main.xml
-		setContentView(R.layout.gridview_main);
-		// Execute RemoteDataTask AsyncTask
-		
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		albumName = getIntent().getExtras().getString("albumName");
 		email = getIntent().getExtras().getString("email");
@@ -53,17 +61,39 @@ public class FetchImages extends Activity {
 			}
 			
 		});
+		
+//		((Button) findViewById(R.id.shareAlbum))
+//				.setOnClickListener(new View.OnClickListener() {
+//					public void onClick(View view) {
+//						Intent intent = new Intent(FetchImages.this,
+//								FetchImages.class);
+//						intent.putExtra("albumName", albumName);
+//						PendingIntent pendingIntent = PendingIntent
+//								.getActivity(FetchImages.this, 0, intent, 0);
+//
+//						Profile profile = Profile.getCurrentProfile();
+//						Notification notification = new Notification.Builder(
+//								FetchImages.this)
+//								.setContentTitle(
+//										profile.getName()
+//												+ " has shared an album: "
+//												+ albumName)
+//								.setSmallIcon(R.drawable.icon)
+//								.setContentIntent(pendingIntent).build();
+//						NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//						// hide the notification after its selected
+//						notification.flags |= Notification.FLAG_AUTO_CANCEL;
+//
+//						notificationManager.notify(0, notification);
+//					}
+//				});
 
+		// Execute RemoteDataTask AsyncTask
 		new RemoteDataTask().execute();
-		
-	
-		
 	}
 	
-	
-		
-		@Override
-		public boolean onOptionsItemSelected(MenuItem item) {
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
@@ -96,13 +126,14 @@ public class FetchImages extends Activity {
 			imageArrayList = new ArrayList<ImageList>();
 			imageNameList = new ArrayList<ImageNameList>();
 			try {
-				// Locate the class table named "albumname" in Parse.com
-				String albumName = getIntent().getExtras().getString("albumname");
+				// Locate the class table named "SamsungPhones" in Parse.com
+
 				System.out.println(albumName);
 				ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("ImageUpload");
-				// Locate the column named "position" in Parse.com and order list
+				// Locate the column named "position" in Parse.com and order
+				// list
 				// by ascending
-		        query.whereEqualTo("AlbumName",albumName);
+				query.whereEqualTo("AlbumName", albumName);
 
 				query.orderByAscending("position");
 				ob = query.find();
@@ -131,14 +162,11 @@ public class FetchImages extends Activity {
 			// Locate the gridview in gridview_main.xml
 			gridview = (GridView) findViewById(R.id.gridview);
 			// Pass the results into ListViewAdapter.java
-			adapter = new GridViewAdapter(FetchImages.this,imageArrayList,imageNameList);
+			adapter = new GridViewAdapter(FetchImages.this, imageArrayList,imageNameList );
 			// Binds the Adapter to the ListView
-			//nameAdapter=new GridViewAdapter(FetchImages.this,imageNameList);
 			gridview.setAdapter(adapter);
-			//gridview.setAdapter(nameAdapter);
 			// Close the progressdialog
 			mProgressDialog.dismiss();
 		}
-		
 	}
 }

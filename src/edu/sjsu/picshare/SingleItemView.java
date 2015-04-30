@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -57,20 +58,7 @@ public class SingleItemView extends Activity {
 		ImageView imgphoto = (ImageView) findViewById(R.id.mysingleimage);
 		 
 		// Load image into the ImageView
-	
-	}
-	
-	@Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                finish();
-                break;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-        return true;
-    }
+
 		imageLoader.DisplayImage(myImage, imgphoto);
 		myImageName = i.getStringExtra("myimagename");
 			
@@ -117,5 +105,20 @@ public class SingleItemView extends Activity {
 				});
 			}
 		});
+		
+		
+}
+
+@Override
+public boolean onOptionsItemSelected(MenuItem item) {
+    switch (item.getItemId()) {
+        case android.R.id.home:
+            finish();
+            break;
+        default:
+            return super.onOptionsItemSelected(item);
+    }
+    return true;
 }
 }
+
