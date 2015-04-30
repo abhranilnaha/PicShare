@@ -53,7 +53,7 @@
         <activity android:name=".ShareAlbumWithFriends" >
         </activity>
         <activity android:name=".SaveShareAlbumDetails" >
-        </activity>
+        
         
         <activity android:name=".SendInviteAcitvity" >
             <intent-filter>
