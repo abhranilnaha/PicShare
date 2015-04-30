@@ -50,7 +50,9 @@
         </activity>
         <activity android:name=".FriendsListActivity" >
         </activity>
-        <activity android:name=".ShareAlbum" >
+        <activity android:name=".ShareAlbumWithFriends" >
+        </activity>
+        <activity android:name=".SaveShareAlbumDetails" >
         </activity>
         
         <activity android:name=".SendInviteAcitvity" >

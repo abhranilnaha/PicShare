@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">PicShare</string>
-    <string name="facebook_app_name">HelloFBSample</string>
+    <string name="facebook_app_name">PicShare</string>
     <string name="cancelled">Cancelled</string>
     <string name="permission_not_granted">Unable to perform selected action because permissions were not granted.</string>
     <string name="ok">OK</string>
@@ -16,20 +16,21 @@
     <string name="no_friends_selected">&lt;No friends selected&gt;</string>
     <string name="no_place_selected">&lt;No place selected&gt;</string>
     <string name="pick_seattle_place">Pick a Seattle Place</string>
-    <string name="app_id">355198514515820</string>
+    <string name="app_id">528036680679756</string>
     <string name="exception">Exception: %1$s</string>
-    <string name="empty">There are no todo items.</string>
-    <string name="menu_insert">Add Todo</string>
-    <string name="name">Enter your todo</string>
+    <string name="album">Album: %1$s</string>
     <string name="confirm">Done</string>    
     <string name="menu_delete">Delete Todo</string>
     <string name="create_new">Create New Album</string>
-    <string name="upload_existing">Upload To Existing Album</string>
+    <string name="view_albums">View Albums</string>
     <string name="action_settings">Settings</string>
     <string name="album_title">Album Title:</string>
     <string name="album_desc">Album Description:</string>
     <string name="create_album">Create Album</string>
+    <string name="share_album">Share Album</string>
     <string name="album_image">Album Image</string>
-    <string name="view_existing">Click To See Photos</string>
+    <string name="view_existing_photos">View Existing Photos</string>
+    <string name="upload_album_photos">Upload Photos To Album</string>
+    <string name="shareAlbum">Share this Album</string>
 
 </resources>

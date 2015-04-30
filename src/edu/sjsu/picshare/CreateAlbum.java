@@ -3,6 +3,7 @@ package edu.sjsu.picshare;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -20,6 +21,8 @@ public class CreateAlbum extends Activity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		setTitle(R.string.create_album);
 		setContentView(R.layout.album_create);
 		Intent intent = getIntent();
 		email = intent.getExtras().getString("email");
@@ -49,4 +52,16 @@ public class CreateAlbum extends Activity {
 			}
 		});
 	}
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 }

@@ -54,13 +54,11 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
-public class MainActivity extends FragmentActivity 
-{
+public class MainActivity extends FragmentActivity {
 
 	private static final String PERMISSION = "publish_actions";
-	private static final String USER_PERMISSIONS[] = {"user_friends", "email"};
-	private static final Location SEATTLE_LOCATION = new Location("") 
-	{
+	private static final String USER_PERMISSIONS[] = { "user_friends", "email" };
+	private static final Location SEATTLE_LOCATION = new Location("") {
 		{
 			setLatitude(47.6097);
 			setLongitude(-122.3331);
@@ -145,12 +143,10 @@ public class MainActivity extends FragmentActivity
 		LoginManager.getInstance().registerCallback(callbackManager,
 				new FacebookCallback<LoginResult>() {
 					@Override
-					public void onSuccess(LoginResult loginResult) 
-					{
+					public void onSuccess(LoginResult loginResult) {
 						handlePendingAction();
 						giveUserPermissions();
 						updateUI();
-						
 					}
 
 					@Override
@@ -196,37 +192,17 @@ public class MainActivity extends FragmentActivity
 			protected void onCurrentProfileChanged(Profile oldProfile,
 					Profile currentProfile) {
 				updateUI();
-				
-				
+
 				handlePendingAction();
 			}
 		};
-			
-		
-//		linkWithParse();
-//		 System.out.println("Getting current parse user");
-//		 final ParseUser user = ParseUser.getCurrentUser();
-//		 if (!ParseFacebookUtils.isLinked(user)) 
-//		 {
-//			  ParseFacebookUtils.linkWithReadPermissionsInBackground(user, this, Arrays.asList(USER_PERMISSIONS), new SaveCallback() 
-//			  {
-//			    @Override
-//			    public void done(ParseException ex) {
-//			      if (ParseFacebookUtils.isLinked(user)) {
-//			        Log.d("MyApp", "Woohoo, user logged in with Facebook!");
-//			        makeMeRequest();
-//			      }
-//			    }
-//			  });
-//		}
-		    
+
 		profilePictureView = (ProfilePictureView) findViewById(R.id.profilePicture);
 		greeting = (TextView) findViewById(R.id.greeting);
 
 		postStatusUpdateButton = (Button) findViewById(R.id.postStatusUpdateButton);
 		postStatusUpdateButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view)
-			{
+			public void onClick(View view) {
 				onClickPostStatusUpdate();
 			}
 		});
@@ -255,8 +231,7 @@ public class MainActivity extends FragmentActivity
 			}
 
 		});
-		
-		
+
 		viewFriendsButton = (Button) findViewById(R.id.viewFriendsButton);
 		viewFriendsButton.setOnClickListener(new View.OnClickListener() {
 
@@ -276,169 +251,114 @@ public class MainActivity extends FragmentActivity
 				.canShow(SharePhotoContent.class);
 	}
 
-//	private void linkWithParse() 
-//	{
-//		ParseFacebookUtils.link(ParseUser.getCurrentUser(), this,
-//                FACEBOOK_REQ_CODE, new SaveCallback() {
-//
-//                    @Override
-//                    public void done(ParseException e) {
-//                        Log.d("Facebook", "Save Callback");
-//                        if (ParseFacebookUtils.isLinked(ParseUser
-//                                .getCurrentUser())) {
-//                            Log.d("Facebook", "Linked Succesfully");
-//                        } else {
-//                            Log.d("Facebook", "Link Failed");
-//                        }
-//                        if (e != null) {
-//                            Log.d("FacebookError",
-//                                    e.getCause() + " " + e.getMessage());
-//                        }
-//
-//                    }
-//                });
-//		
-//	}
+	private void makeMeRequest() {
+		GraphRequest request = GraphRequest.newMeRequest(
+				AccessToken.getCurrentAccessToken(),
+				new GraphRequest.GraphJSONObjectCallback() {
+					@Override
+					public void onCompleted(JSONObject object,
+							GraphResponse response) {
+						try {
+							System.out.println("Inside FriendsListAcitvity... calling Graph API");
+							JSONObject innerJson = response.getJSONObject();
+							System.out.println("innerJson is :" + innerJson);
+							name = (String) object.get("name");
+							email = (String) object.get("email");
+						} catch (Exception e) {
 
-	private void makeMeRequest() 
-	{
-		GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
-				new GraphRequest.GraphJSONObjectCallback() 
-                {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) 
-                    {
-                    	try 
-                    	{
-                    		System.out.println("Inside FriendsListAcitvity... calling Graph API");
-                    		JSONObject innerJson = response.getJSONObject();
-                    		System.out.println("innerJson is :"+innerJson);
-                    		name = (String) object.get("name");
-                    		email = (String) object.get("email");
-                    		
-            	        	
-							//Toast.makeText(getApplicationContext(), "name is "+name, Toast.LENGTH_SHORT).show();
-							//Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT);
-						} 
-                    	catch (Exception e) 
-                    	{
-							
 							e.printStackTrace();
 						}
-                    }
-                });
-        request.executeAsync();
-        ParseUser currentUser = ParseUser.getCurrentUser();
-        currentUser.setEmail(email);
-        //currentUser.put("email", email);
-        currentUser.saveInBackground();
-		
+					}
+				});
+		request.executeAsync();
+		ParseUser currentUser = ParseUser.getCurrentUser();
+		currentUser.setEmail(email);		
+		currentUser.saveInBackground();
 	}
 
-	private void giveUserPermissions() 
-	{
-		LoginManager.getInstance().logInWithReadPermissions(this,Arrays.asList(USER_PERMISSIONS));
-		ParseFacebookUtils.logInWithReadPermissionsInBackground(this, Arrays.asList(USER_PERMISSIONS));
+	private void giveUserPermissions() {
+		LoginManager.getInstance().logInWithReadPermissions(this,
+				Arrays.asList(USER_PERMISSIONS));
+		ParseFacebookUtils.logInWithReadPermissionsInBackground(this,
+				Arrays.asList(USER_PERMISSIONS));
 	}
-	
+
 	@Override
-	protected void onResume()
-	{
+	protected void onResume() {
 		super.onResume();
 		AppEventsLogger.activateApp(this);
 		updateUI();
 	}
-	
-	private void captureUserInfo() 
-	{
-		
-		GraphRequest request = GraphRequest.newMeRequest(AccessToken.getCurrentAccessToken(),
-				new GraphRequest.GraphJSONObjectCallback() 
-                {
-                    @Override
-                    public void onCompleted(JSONObject object, GraphResponse response) 
-                    {
-                    	try 
-                    	{
-                    		System.out.println("Inside captureUserInfo... calling Graph API");
-                    		JSONObject innerJson = response.getJSONObject();
-                    		System.out.println("innerJson is :"+innerJson);
-                    		name = (String) object.get("name");
-                    		email = (String) object.get("email");
-                    		System.out.println("name is : " + name);
-                    		System.out.println("email is : " + email);
-                    		storeUserInfo(name,email);
-            	        	
-							//Toast.makeText(getApplicationContext(), "name is "+name, Toast.LENGTH_SHORT).show();
-							//Toast.makeText(getApplicationContext(), "", Toast.LENGTH_SHORT);
-						} 
-                    	catch (Exception e) 
-                    	{
-							
+
+	private void captureUserInfo() {
+		GraphRequest request = GraphRequest.newMeRequest(
+				AccessToken.getCurrentAccessToken(),
+				new GraphRequest.GraphJSONObjectCallback() {
+					@Override
+					public void onCompleted(JSONObject object, GraphResponse response) {
+						try {
+							System.out.println("Inside captureUserInfo... calling Graph API");
+							JSONObject innerJson = response.getJSONObject();
+							System.out.println("innerJson is :" + innerJson);
+							name = (String) object.get("name");
+							email = (String) object.get("email");
+							System.out.println("name is : " + name);
+							System.out.println("email is : " + email);
+							storeUserInfo(name, email);
+						} catch (Exception e) {
 							e.printStackTrace();
 						}
-                    }
-                });
-        request.executeAsync();
+					}
+				});
+		request.executeAsync();
 		System.out.println("Finished executing newMeRequest");
-        System.out.println("name is : " + name);
+		System.out.println("name is : " + name);
 		System.out.println("email is : " + email);
-//        if(!email.equals(""))
-//        {	
-        	//storeUserInfo(name,email);
-//        }
-		
 	}
 
 	boolean userExists = true;
-	
-	private void storeUserInfo(String name, String email) 
-	{
-		
+
+	private void storeUserInfo(String name, String email) {
 		System.out.println("Inside storeUserInfo... ");
 		System.out.println("name is : " + name);
 		System.out.println("email is : " + email);
 		ParseQuery<ParseObject> query = ParseQuery.getQuery("Customer");
-		//query.whereEqualTo("name", name);
+		// query.whereEqualTo("name", name);
 		query.whereEqualTo("email", email);
-		
+
 		query.findInBackground(new FindCallback<ParseObject>() {
-		    public void done(List<ParseObject> user, ParseException e) {
-		        if (e == null) 
-		        {
-		            Log.d("score", "Retrieved " + user.size() + " users");
-		            if(user.size() != 0)
-		            {
-		            	userExists = true;
-		            }
-		            
-		        } else 
-		        {
-		            Log.d("score", "Error: " + e.getMessage());
-		            if(user.size() == 0)
-		            {
-		            	userExists = false;
-		            }
-		        }
-		    }
+			public void done(List<ParseObject> user, ParseException e) {
+				if (e == null) {
+					Log.d("score", "Retrieved " + user.size() + " users");
+					if (user.size() != 0) {
+						userExists = true;
+					}
+
+				} else {
+					Log.d("score", "Error: " + e.getMessage());
+					if (user.size() == 0) {
+						userExists = false;
+					}
+				}
+			}
 		});
-		
-		if(!userExists)
-		{
-			System.out.println("user does not exist, inserting data in Customers");
+
+		if (!userExists) {
+			System.out
+					.println("user does not exist, inserting data in Customers");
 			ParseObject newUser = new ParseObject("Customers");
 			newUser.put("name", name);
 			newUser.put("email", email);
 			newUser.saveInBackground();
-		ParseUser currentUser = ParseUser.getCurrentUser();
-		if(currentUser!= null)
-		{
-			System.out.println("ParseUser current user is "+currentUser);
-			System.out.println("user name :="+currentUser.getUsername()+", ACL is  :="+currentUser.getACL());
-			currentUser.setEmail(email);
-        //	currentUser.put("email", email);
-			currentUser.saveInBackground();
-		}
+			ParseUser currentUser = ParseUser.getCurrentUser();
+			if (currentUser != null) {
+				System.out.println("ParseUser current user is " + currentUser);
+				System.out.println("user name :=" + currentUser.getUsername()
+						+ ", ACL is  :=" + currentUser.getACL());
+				currentUser.setEmail(email);
+				// currentUser.put("email", email);
+				currentUser.saveInBackground();
+			}
 		}
 	}
 
@@ -450,24 +370,15 @@ public class MainActivity extends FragmentActivity
 	}
 
 	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) 
-	{
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		super.onActivityResult(requestCode, resultCode, data);
 		callbackManager.onActivityResult(requestCode, resultCode, data);
-		ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);
-		//ParseFacebookUtils.finishAuthentication(requestCode, resultCode, data);
+		ParseFacebookUtils.onActivityResult(requestCode, resultCode, data);		
 	}
 
 	@Override
-	public void onPause() 
-	{
+	public void onPause() {
 		super.onPause();
-
-		// Call the 'deactivateApp' method to log an app event for use in
-		// analytics and advertising
-		// reporting. Do so in the onPause methods of the primary Activities
-		// that an app may be
-		// launched into.
 		AppEventsLogger.deactivateApp(this);
 	}
 
@@ -480,19 +391,15 @@ public class MainActivity extends FragmentActivity
 	private void updateUI() {
 		boolean enableButtons = AccessToken.getCurrentAccessToken() != null;
 
-		postStatusUpdateButton.setEnabled(enableButtons
-				|| canPresentShareDialog);
-		postPhotoButton.setEnabled(enableButtons
-				|| canPresentShareDialogWithPhotos);
+		postStatusUpdateButton.setEnabled(enableButtons	|| canPresentShareDialog);
+		postPhotoButton.setEnabled(enableButtons || canPresentShareDialogWithPhotos);
 
 		Profile profile = Profile.getCurrentProfile();
-		if (enableButtons && profile != null) 
-		{
+		if (enableButtons && profile != null) {
 			profilePictureView.setProfileId(profile.getId());
-			greeting.setText(getString(R.string.hello_user,
-					profile.getFirstName()));
+			greeting.setText(getString(R.string.hello_user,	profile.getFirstName()));
 			captureUserInfo();
-			
+
 		} else {
 			profilePictureView.setProfileId(null);
 			greeting.setText(null);
@@ -500,10 +407,7 @@ public class MainActivity extends FragmentActivity
 	}
 
 	private void handlePendingAction() {
-		PendingAction previouslyPendingAction = pendingAction;
-		// These actions may re-set pendingAction if they are still pending, but
-		// we assume they
-		// will succeed.
+		PendingAction previouslyPendingAction = pendingAction;		
 		pendingAction = PendingAction.NONE;
 
 		switch (previouslyPendingAction) {
@@ -527,21 +431,18 @@ public class MainActivity extends FragmentActivity
 		startActivity(intent);
 
 	}
-	
-	private void onClickViewFriends() {
-//		Intent intent = new Intent(this, FriendsListActivity.class);
-//		startActivity(intent);
 
+	private void onClickViewFriends() {
+		// Intent intent = new Intent(this, FriendsListActivity.class);
+		// startActivity(intent);
 	}
 
 	private void postStatusUpdate() {
 		Profile profile = Profile.getCurrentProfile();
 		ShareLinkContent linkContent = new ShareLinkContent.Builder()
 				.setContentTitle("Hello Facebook")
-				.setContentDescription(
-						"The 'Hello Facebook' sample  showcases simple Facebook integration")
-				.setContentUrl(
-						Uri.parse("http://developers.facebook.com/docs/android"))
+				.setContentDescription("The 'Hello Facebook' sample  showcases simple Facebook integration")
+				.setContentUrl(Uri.parse("http://developers.facebook.com/docs/android"))
 				.build();
 		if (canPresentShareDialog) {
 			shareDialog.show(linkContent);
@@ -552,11 +453,10 @@ public class MainActivity extends FragmentActivity
 		}
 	}
 
-	private void onClickUploadPhoto() 
-	{
+	private void onClickUploadPhoto() {
 		Intent intent = new Intent(this, UploadPhoto.class);
-		System.out.println("onClickUploadPhoto .... email is "+email);
-		intent.putExtra("email",email);
+		System.out.println("onClickUploadPhoto .... email is " + email);
+		intent.putExtra("email", email);
 		startActivity(intent);
 	}
 
@@ -566,15 +466,12 @@ public class MainActivity extends FragmentActivity
 	}
 
 	private void postPhoto() {
-		Bitmap image = BitmapFactory.decodeResource(this.getResources(),
-				R.drawable.icon);
-		SharePhoto sharePhoto = new SharePhoto.Builder().setBitmap(image)
-				.build();
+		Bitmap image = BitmapFactory.decodeResource(this.getResources(), R.drawable.icon);
+		SharePhoto sharePhoto = new SharePhoto.Builder().setBitmap(image).build();
 		ArrayList<SharePhoto> photos = new ArrayList<SharePhoto>();
 		photos.add(sharePhoto);
 
-		SharePhotoContent sharePhotoContent = new SharePhotoContent.Builder()
-				.setPhotos(photos).build();
+		SharePhotoContent sharePhotoContent = new SharePhotoContent.Builder().setPhotos(photos).build();
 		if (canPresentShareDialogWithPhotos) {
 			shareDialog.show(sharePhotoContent);
 		} else if (hasPublishPermission()) {
@@ -586,8 +483,7 @@ public class MainActivity extends FragmentActivity
 
 	private boolean hasPublishPermission() {
 		AccessToken accessToken = AccessToken.getCurrentAccessToken();
-		return accessToken != null
-				&& accessToken.getPermissions().contains("publish_actions");
+		return accessToken != null && accessToken.getPermissions().contains("publish_actions");
 	}
 
 	private void performPublish(PendingAction action, boolean allowNoToken) {
@@ -603,7 +499,7 @@ public class MainActivity extends FragmentActivity
 				// we get called back.
 				LoginManager.getInstance().logInWithPublishPermissions(this,
 						Arrays.asList(PERMISSION));
-				
+
 				return;
 			}
 		}

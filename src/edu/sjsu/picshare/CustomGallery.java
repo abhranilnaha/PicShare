@@ -17,6 +17,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -31,8 +32,10 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.DisplayImageOptions;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.nostra13.universalimageloader.core.assist.SimpleImageLoadingListener;
+import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
+import com.parse.SaveCallback;
 
 public class CustomGallery extends Activity {
 
@@ -41,30 +44,36 @@ public class CustomGallery extends Activity {
 	private ImageAdapter imageAdapter;
 	protected ImageLoader imageLoader = ImageLoader.getInstance();
 	private Button UploadToAlbum;
-	String email;
 	private Button viewPhotos;
-	private Button shareAlbum;
-
+	private String albumName;
+	private String email;
 	Bitmap thumbnail = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.gallery_custom);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		albumName = getIntent().getExtras().getString("albumName");
 		email = getIntent().getExtras().getString("email");
-		UploadToAlbum = (Button) findViewById(R.id.button1);
-		
+		setTitle(String.format(getResources().getString(R.string.album),
+				albumName));
+		setContentView(R.layout.gallery_custom);
+		UploadToAlbum = (Button) findViewById(R.id.uploadToAlbum);
+
 		final String[] columns = { MediaStore.Images.Media.DATA, MediaStore.Images.Media._ID };
 		final String orderBy = MediaStore.Images.Media.DATE_TAKEN;
 
-		final Cursor imagecursor = managedQuery(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, 
-				columns, null, null, orderBy + " DESC");
+		final Cursor imagecursor = managedQuery(
+				MediaStore.Images.Media.EXTERNAL_CONTENT_URI, columns, null,
+				null, orderBy + " DESC");
 
 		this.imageUrls = new ArrayList<String>();
 
-		for (int i = 0; i < imagecursor.getCount(); i++) {
+		for (int i = 0; i < imagecursor.getCount(); i++) 
+		{
 			imagecursor.moveToPosition(i);
-			int dataColumnIndex = imagecursor.getColumnIndex(MediaStore.Images.Media.DATA);
+			int dataColumnIndex = imagecursor
+					.getColumnIndex(MediaStore.Images.Media.DATA);
 			imageUrls.add(imagecursor.getString(dataColumnIndex));
 
 			System.out.println("=====> Array path => " + imageUrls.get(i));
@@ -91,14 +100,14 @@ public class CustomGallery extends Activity {
 					Uri fileUri = Uri.parse(uriString);
 					String displayName = new File(fileUri.getPath()).getName();
 
-					System.out.println("=====> Array path => " + imageUrls.get(i));
+					//System.out.println("=====> Array path => " + imageUrls.get(i));
 
 					thumbnail = (BitmapFactory.decodeFile(selectedItems.get(i)));
 					// converting image into Bitmap
 					Bitmap bm = BitmapFactory.decodeFile(selectedItems.get(i));
 					ByteArrayOutputStream baos = new ByteArrayOutputStream();
 					bm.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-					
+
 					byte[] byteArrayImage = baos.toByteArray();
 					// converting image into Base64
 					String encodedImage = Base64.encodeToString(byteArrayImage, Base64.DEFAULT);
@@ -108,13 +117,11 @@ public class CustomGallery extends Activity {
 					ParseFile file = new ParseFile(displayName, byteArrayImage);
 					// Upload the image into Parse Cloud
 					file.saveInBackground();
-					String albumName = getIntent().getExtras().getString("albumName");
 
 					// Create a New Class called "ImageUpload" in Parse
 					ParseObject imgupload = new ParseObject("ImageUpload");
 
 					// Create a column named "ImageName" and set the string
-					
 					imgupload.put("AlbumName", albumName);
 
 					// Create a column named "ImageName" and set the string
@@ -124,54 +131,55 @@ public class CustomGallery extends Activity {
 					imgupload.put("ImageFile", file);
 
 					// Create the class and the columns
-					imgupload.saveInBackground();
+					imgupload.saveInBackground(new SaveCallback() {
+						public void done(ParseException e) {
+							if (e == null) {
+								Intent intent = new Intent(CustomGallery.this,
+										FetchImages.class);
+								intent.putExtra("albumName", albumName);
+								startActivity(intent);
+							}
+						}
+					});
 
 					// Show a simple toast message
 					Toast.makeText(CustomGallery.this, i + 1 + " Image Uploaded", Toast.LENGTH_SHORT).show();
 				}
-				Toast.makeText(CustomGallery.this, "Upload Completed", Toast.LENGTH_SHORT).show();
-				System.out.println("images uploaded");
-				System.out.println("retrieving....");
+
+				Toast.makeText(CustomGallery.this, "Upload Completed",
+						Toast.LENGTH_SHORT).show();
 			}
 		});
-		
-		
-	
-	viewPics();
-		
+
+		viewPics();
 	}
 
 	private void viewPics() {
-		// TODO Auto-generated method stub
 		viewPhotos = (Button) findViewById(R.id.viewSavedPhotos);
 
-		viewPhotos.setOnClickListener(new View.OnClickListener() 
-		{
+		viewPhotos.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
 				String albumName = getIntent().getExtras().getString("albumName");
-			Intent intent = new Intent(CustomGallery.this, FetchImages.class);  
-			intent.putExtra("albumname", albumName);
-			
+				Intent intent = new Intent(CustomGallery.this, FetchImages.class);
+				intent.putExtra("albumName", albumName);
+				intent.putExtra("email", email);
 				startActivity(intent);
-				//System.out.println("in view method");
 			}
 		});
-		
-		shareAlbum = (Button) findViewById(R.id.shareWithFriends);
-		viewPhotos.setOnClickListener(new View.OnClickListener() 
-		{
-			public void onClick(View view) {
-				String albumName = getIntent().getExtras().getString("albumName");
-			Intent intent = new Intent(CustomGallery.this, ShareAlbum.class);  
-			intent.putExtra("albumname", albumName);
-			intent.putExtra("email", email);
-			
-				startActivity(intent);
-				//System.out.println("in view method");
-			}
-		});
-		
+
 	}
+	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 
 	@Override
 	protected void onStop() {
@@ -180,7 +188,6 @@ public class CustomGallery extends Activity {
 	}
 
 	public class ImageAdapter extends BaseAdapter {
-
 		ArrayList<String> mList;
 		LayoutInflater mInflater;
 		Context mContext;
@@ -193,7 +200,6 @@ public class CustomGallery extends Activity {
 			mSparseBooleanArray = new SparseBooleanArray();
 			mList = new ArrayList<String>();
 			this.mList = imageList;
-
 		}
 
 		public ArrayList<String> getCheckedItems() {
@@ -243,10 +249,10 @@ public class CustomGallery extends Activity {
 
 		OnCheckedChangeListener mCheckedChangeListener = new OnCheckedChangeListener() {
 			@Override
-			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+			public void onCheckedChanged(CompoundButton buttonView,
+					boolean isChecked) {
 				// TODO Auto-generated method stub
-				mSparseBooleanArray.put((Integer) buttonView.getTag(),
-						isChecked);
+				mSparseBooleanArray.put((Integer) buttonView.getTag(), isChecked);
 			}
 		};
 	}

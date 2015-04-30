@@ -6,6 +6,7 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -16,15 +17,19 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-public class AlbumListDisplay extends Activity {
+public class AlbumListDisplay extends Activity 
+{
 	GridView gvAlbums = null;
 	AlbumListAdapter adapterAlbums;
 	ArrayList<Album> albums = null;
 	String email;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) 
+	{
 		super.onCreate(savedInstanceState);
+		getActionBar().setDisplayHomeAsUpEnabled(true);
+		setTitle(R.string.view_albums);
 		setContentView(R.layout.album_grid);
 		albums = new ArrayList<Album>();
 		gvAlbums = (GridView) findViewById(R.id.grid_albums);
@@ -72,6 +77,16 @@ public class AlbumListDisplay extends Activity {
 			}
 		});
 	}
-
 	
+	@Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+        return true;
+    }
 }
