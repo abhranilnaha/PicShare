@@ -69,7 +69,8 @@ public class CustomGallery extends Activity {
 
 		this.imageUrls = new ArrayList<String>();
 
-		for (int i = 0; i < imagecursor.getCount(); i++) {
+		for (int i = 0; i < imagecursor.getCount(); i++) 
+		{
 			imagecursor.moveToPosition(i);
 			int dataColumnIndex = imagecursor
 					.getColumnIndex(MediaStore.Images.Media.DATA);
@@ -99,7 +100,7 @@ public class CustomGallery extends Activity {
 					Uri fileUri = Uri.parse(uriString);
 					String displayName = new File(fileUri.getPath()).getName();
 
-					System.out.println("=====> Array path => " + imageUrls.get(i));
+					//System.out.println("=====> Array path => " + imageUrls.get(i));
 
 					thumbnail = (BitmapFactory.decodeFile(selectedItems.get(i)));
 					// converting image into Bitmap

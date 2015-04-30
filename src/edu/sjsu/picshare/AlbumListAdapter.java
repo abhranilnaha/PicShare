@@ -15,7 +15,7 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
 	ArrayList<Album> mylist;
 
 	public AlbumListAdapter(Context context, ArrayList<Album> mylist) {
-		super(context, R.layout.album_list, mylist);
+		super(context, R.layout.display_app_friends_list, mylist);
 		this.mylist = mylist;
 	}
 

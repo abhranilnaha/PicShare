@@ -17,14 +17,16 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-public class AlbumListDisplay extends Activity {
+public class AlbumListDisplay extends Activity 
+{
 	GridView gvAlbums = null;
 	AlbumListAdapter adapterAlbums;
 	ArrayList<Album> albums = null;
 	String email;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) 
+	{
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setTitle(R.string.view_albums);

@@ -31,42 +31,60 @@ public class FetchImages extends Activity {
 	GridViewAdapter adapter;
 	private List<ImageList> imageArrayList = null;
 	private String albumName;
+	private String email;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		albumName = getIntent().getExtras().getString("albumName");
+		email = getIntent().getExtras().getString("email");
 		setTitle(String.format(getResources().getString(R.string.album),
 				albumName));
 		// Get the view from gridview_main.xml
 		setContentView(R.layout.gridview_main);
 
 		((Button) findViewById(R.id.shareAlbum))
-				.setOnClickListener(new View.OnClickListener() {
-					public void onClick(View view) {
-						Intent intent = new Intent(FetchImages.this,
-								FetchImages.class);
-						intent.putExtra("albumName", albumName);
-						PendingIntent pendingIntent = PendingIntent
-								.getActivity(FetchImages.this, 0, intent, 0);
+		.setOnClickListener(new View.OnClickListener() {
 
-						Profile profile = Profile.getCurrentProfile();
-						Notification notification = new Notification.Builder(
-								FetchImages.this)
-								.setContentTitle(
-										profile.getName()
-												+ " has shared an album: "
-												+ albumName)
-								.setSmallIcon(R.drawable.icon)
-								.setContentIntent(pendingIntent).build();
-						NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-						// hide the notification after its selected
-						notification.flags |= Notification.FLAG_AUTO_CANCEL;
-
-						notificationManager.notify(0, notification);
-					}
-				});
+			@Override
+			public void onClick(View v) 
+			{
+				Intent intent = new Intent(FetchImages.this,
+						ShareAlbumWithFriends.class);
+				intent.putExtra("albumName", albumName);
+				intent.putExtra("email", email);
+				startActivity(intent);
+				
+			}
+			
+		});
+		
+//		((Button) findViewById(R.id.shareAlbum))
+//				.setOnClickListener(new View.OnClickListener() {
+//					public void onClick(View view) {
+//						Intent intent = new Intent(FetchImages.this,
+//								FetchImages.class);
+//						intent.putExtra("albumName", albumName);
+//						PendingIntent pendingIntent = PendingIntent
+//								.getActivity(FetchImages.this, 0, intent, 0);
+//
+//						Profile profile = Profile.getCurrentProfile();
+//						Notification notification = new Notification.Builder(
+//								FetchImages.this)
+//								.setContentTitle(
+//										profile.getName()
+//												+ " has shared an album: "
+//												+ albumName)
+//								.setSmallIcon(R.drawable.icon)
+//								.setContentIntent(pendingIntent).build();
+//						NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+//						// hide the notification after its selected
+//						notification.flags |= Notification.FLAG_AUTO_CANCEL;
+//
+//						notificationManager.notify(0, notification);
+//					}
+//				});
 
 		// Execute RemoteDataTask AsyncTask
 		new RemoteDataTask().execute();

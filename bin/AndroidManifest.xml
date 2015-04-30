@@ -48,6 +48,13 @@
         </activity>
         <activity android:name=".GridViewAdapter" >
         </activity>
+        <activity android:name=".FriendsListActivity" >
+        </activity>
+        <activity android:name=".ShareAlbumWithFriends" >
+        </activity>
+        <activity android:name=".SaveShareAlbumDetails" >
+        </activity>
+        
         <activity android:name=".SendInviteAcitvity" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
