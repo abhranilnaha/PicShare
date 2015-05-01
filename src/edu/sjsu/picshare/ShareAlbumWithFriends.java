@@ -52,11 +52,9 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 		ArrayList<Friend> fList = dataAdapter.mylist;
 		System.out.println("dataAdapter.mylist; :"+dataAdapter.mylist);
 		ArrayList<String> emailList = new ArrayList<String>(); 
-		for(int i=0;i<fList.size();i++)
-		{
+		for(int i=0;i<fList.size();i++) {
 		     Friend friend = fList.get(i);
-		     if(friend.isBox())
-		     {
+		     if(friend.isBox()) {
 		    	 emailList.add(friend.getEmailAddress());
 		     }
 		 }
@@ -83,8 +81,7 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 	private boolean saveSharedAlbumDetails(ArrayList<String> emailList,String albumName) {
 		
 		final String alb = albumName;
-		for(final String e : emailList)
-		{
+		for(final String e : emailList) {
 			System.out.println("Email from list is "+ e);
 			
 			final ParseQuery<ParseObject> query = ParseQuery.getQuery("Customers");		
@@ -92,12 +89,10 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 				public void done(List<ParseObject> nameList, ParseException ex) {
 					if (ex == null) {
 						try {						
-							for (int i = 0; i < nameList.size(); i++) 
-							{
+							for (int i = 0; i < nameList.size(); i++) {
 								ParseObject obj = query.get(nameList.get(i).getObjectId());
 								String emailAddr = (String) obj.get("email");								
-								if (e.equals(emailAddr))
-								{
+								if (e.equals(emailAddr)) {
 									obj.add("AlbumsSharedWithMe", alb);
 									inserted =  true;
 								}
@@ -120,14 +115,12 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 			public void done(List<ParseObject> nameList, ParseException e) {
 				if (e == null) {
 					try {						
-						for (int i = 0; i < nameList.size(); i++) 
-						{
+						for (int i = 0; i < nameList.size(); i++) {
 							ParseObject obj = query.get(nameList.get(i).getObjectId());
 							String friendName = (String) obj.get("name");
 							String emailAddr = (String) obj.get("email");
 							
-							if (!email.equals(emailAddr))
-							{
+							if (!email.equals(emailAddr)) {
 								Friend friend = new Friend(friendName, false, email);
 								System.out.println("Friend name is : "+friendName);
 								System.out.println("Friend email is : "+emailAddr);
@@ -163,7 +156,7 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 		if(pos != ListView.INVALID_POSITION) {
 			Friend f = friendList.get(pos);
 			f.setBox(isChecked);
-			Toast.makeText(this, "Clicked on Friend :"+ f.getName(), Toast.LENGTH_SHORT).show();
+			//Toast.makeText(this, "Clicked on Friend :"+ f.getName(), Toast.LENGTH_SHORT).show();
 		}		
 	}
 }

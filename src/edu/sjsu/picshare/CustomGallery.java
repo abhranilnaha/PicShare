@@ -134,9 +134,9 @@ public class CustomGallery extends Activity {
 					imgupload.saveInBackground(new SaveCallback() {
 						public void done(ParseException e) {
 							if (e == null) {
-								Intent intent = new Intent(CustomGallery.this,
-										FetchImages.class);
+								Intent intent = new Intent(CustomGallery.this, FetchImages.class);
 								intent.putExtra("albumName", albumName);
+								intent.putExtra("email", email);
 								startActivity(intent);
 							}
 						}
