@@ -17,9 +17,7 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-public class ShareAlbumWithFriends extends Activity
-implements android.widget.CompoundButton.OnCheckedChangeListener
-{
+public class ShareAlbumWithFriends extends Activity implements android.widget.CompoundButton.OnCheckedChangeListener {
 	private String albumName;
 	private String email;
 	private ListView mainListView;  
@@ -28,8 +26,7 @@ implements android.widget.CompoundButton.OnCheckedChangeListener
 	Button shareAlbumButton;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) 
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.display_app_friends_list);
@@ -37,27 +34,21 @@ implements android.widget.CompoundButton.OnCheckedChangeListener
 		email = getIntent().getExtras().getString("email");
 		System.out.println("Inside ShareAlbumWithFriends...Received intent email..: "+email);
 		mainListView = (ListView) findViewById(R.id.appFriendsListView);
-		try 
-		{
+		try {
 			displayListView();
-		}
-		catch (ParseException e) 
-		{
+		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
 		shareAlbumButton = (Button) findViewById(R.id.shareAlbumWithFriendsButton);
 		shareAlbumButton.setOnClickListener(new View.OnClickListener() {
-			public void onClick(View view) 
-			{
-				
+			public void onClick(View view) {				
 				onClickShareWithFriendsButton();
 			}
 		});
 	}
 	
-	private void onClickShareWithFriendsButton() 
-	{
+	private void onClickShareWithFriendsButton() {
 		ArrayList<Friend> fList = dataAdapter.mylist;
 		System.out.println("dataAdapter.mylist; :"+dataAdapter.mylist);
 		ArrayList<String> emailList = new ArrayList<String>(); 
@@ -89,8 +80,7 @@ implements android.widget.CompoundButton.OnCheckedChangeListener
 //		startActivity(intent);
 	}
 	boolean inserted = false;
-	private boolean saveSharedAlbumDetails(ArrayList<String> emailList,String albumName) 
-	{
+	private boolean saveSharedAlbumDetails(ArrayList<String> emailList,String albumName) {
 		
 		final String alb = albumName;
 		for(final String e : emailList)
@@ -123,16 +113,7 @@ implements android.widget.CompoundButton.OnCheckedChangeListener
 		return inserted;	
 	}
 
-	private void displayListView() throws ParseException 
-	{
-		friendList = getFriendsFromTable();
-		dataAdapter = new FriendListAdapter(this, friendList);
-		System.out.println("Friend List in DisplayListView is : "+friendList);
-		mainListView.setAdapter(dataAdapter);
-	}
-
-	public ArrayList<Friend> getFriendsFromTable() throws ParseException
-	{
+	private void displayListView() throws ParseException {
 		friendList = new ArrayList<Friend>();
 		final ParseQuery<ParseObject> query = ParseQuery.getQuery("Customers");		
 		query.findInBackground(new FindCallback<ParseObject>() {
@@ -149,20 +130,20 @@ implements android.widget.CompoundButton.OnCheckedChangeListener
 							{
 								Friend friend = new Friend(friendName, false, email);
 								System.out.println("Friend name is : "+friendName);
-								System.out.println("Friend email is : "+friendName);
+								System.out.println("Friend email is : "+emailAddr);
 								friendList.add(friend);
 							}
 						}
-						
+						dataAdapter = new FriendListAdapter(ShareAlbumWithFriends.this, friendList);
+						System.out.println("Friend List in DisplayListView is : "+friendList);
+						mainListView.setAdapter(dataAdapter);
 					} catch (ParseException e1) {
 						e1.printStackTrace();
 					}
 				}
 			}
-		});
-		System.out.println("friendList is :::::::::   "+friendList);
-		return friendList;
-	}
+		});		
+	}	
 	
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -175,26 +156,14 @@ implements android.widget.CompoundButton.OnCheckedChangeListener
         }
         return true;
     }
-	
-	
-	
 
-			@Override
-			public void onCheckedChanged(CompoundButton buttonView,
-					boolean isChecked) 
-			{
-				int pos = mainListView.getPositionForView(buttonView);
-				if(pos != ListView.INVALID_POSITION)
-				{
-					Friend f = friendList.get(pos);
-					f.setBox(isChecked);
-					Toast.makeText(this, "Clicked on Friend :"+ f.getName() 
-							, Toast.LENGTH_SHORT).show();
-				}
-				
-			}
-		
-
+	@Override
+	public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+		int pos = mainListView.getPositionForView(buttonView);
+		if(pos != ListView.INVALID_POSITION) {
+			Friend f = friendList.get(pos);
+			f.setBox(isChecked);
+			Toast.makeText(this, "Clicked on Friend :"+ f.getName(), Toast.LENGTH_SHORT).show();
+		}		
 	}
-	
-
+}

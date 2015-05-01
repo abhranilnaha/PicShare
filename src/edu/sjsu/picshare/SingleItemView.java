@@ -74,9 +74,11 @@ public class SingleItemView extends Activity {
 			public void done(ParseObject retImageObj, ParseException e) {
 				if (e == null) {
 					retImageDesc =  retImageObj.getString("ImageTitle");		
-					retImageLoc =  retImageObj.getString("ImageLocation");	
-					imgTitle.setText(retImageDesc.toString(),TextView.BufferType.EDITABLE);
-					imgLoc.setText(retImageLoc.toString(), TextView.BufferType.EDITABLE);
+					retImageLoc =  retImageObj.getString("ImageLocation");
+						if (retImageDesc != null) {
+							imgTitle.setText(retImageDesc.toString(),TextView.BufferType.EDITABLE);
+							imgLoc.setText(retImageLoc.toString(), TextView.BufferType.EDITABLE);
+						}
 					}
 			}
 		});
