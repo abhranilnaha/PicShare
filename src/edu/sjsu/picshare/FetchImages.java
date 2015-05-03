@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
-
 import com.facebook.Profile;
 import com.parse.ParseException;
 import com.parse.ParseFile;
@@ -29,9 +28,11 @@ public class FetchImages extends Activity {
 	List<ParseObject> ob;
 	ProgressDialog mProgressDialog;
 	GridViewAdapter adapter;
+	GridViewAdapter nameAdapter;
 	private List<ImageList> imageArrayList = null;
 	private String albumName;
 	private String email;
+	private List<ImageNameList> imageNameList = null;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -122,6 +123,7 @@ public class FetchImages extends Activity {
 		protected Void doInBackground(Void... params) {
 			// Create the array
 			imageArrayList = new ArrayList<ImageList>();
+			imageNameList = new ArrayList<ImageNameList>();
 			try {
 				// Locate the class table named "SamsungPhones" in Parse.com
 
@@ -134,11 +136,18 @@ public class FetchImages extends Activity {
 
 				query.orderByAscending("position");
 				ob = query.find();
-				for (ParseObject country : ob) {
-					ParseFile image = (ParseFile) country.get("ImageFile");
+				for (ParseObject fetchedimg : ob) {
+					ParseFile image = (ParseFile) fetchedimg.get("ImageFile");
 					ImageList map = new ImageList();
 					map.setMyImage(image.getUrl());
 					imageArrayList.add(map);
+				}
+				
+				for (ParseObject fetchedimgName : ob) {
+					String imageName = (String) fetchedimgName.getObjectId();
+					ImageNameList mapImgName = new ImageNameList();
+					mapImgName.setMyImageName(imageName);
+					imageNameList.add(mapImgName);
 				}
 			} catch (ParseException e) {
 				Log.e("Error", e.getMessage());
@@ -152,7 +161,7 @@ public class FetchImages extends Activity {
 			// Locate the gridview in gridview_main.xml
 			gridview = (GridView) findViewById(R.id.gridview);
 			// Pass the results into ListViewAdapter.java
-			adapter = new GridViewAdapter(FetchImages.this, imageArrayList);
+			adapter = new GridViewAdapter(FetchImages.this, imageArrayList,imageNameList );
 			// Binds the Adapter to the ListView
 			gridview.setAdapter(adapter);
 			// Close the progressdialog

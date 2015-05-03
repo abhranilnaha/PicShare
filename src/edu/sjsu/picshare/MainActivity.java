@@ -47,7 +47,6 @@ import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseFacebookUtils;
 import com.parse.ParseObject;
@@ -58,13 +57,7 @@ public class MainActivity extends FragmentActivity {
 
 	private static final String PERMISSION = "publish_actions";
 	private static final String USER_PERMISSIONS[] = { "user_friends", "email" };
-	private static final Location SEATTLE_LOCATION = new Location("") {
-		{
-			setLatitude(47.6097);
-			setLongitude(-122.3331);
-		}
-	};
-
+	
 	private final String PENDING_ACTION_BUNDLE_KEY = "edu.sjsu.picshare:PendingAction";
 
 	private Button postStatusUpdateButton;
@@ -72,6 +65,7 @@ public class MainActivity extends FragmentActivity {
 	private Button uploadPhotoButton;
 	private Button inviteFriendsButton;
 	private Button viewFriendsButton;
+	private Button sharedAlbumsButton;
 	private ProfilePictureView profilePictureView;
 	private TextView greeting;
 	private PendingAction pendingAction = PendingAction.NONE;
@@ -129,8 +123,7 @@ public class MainActivity extends FragmentActivity {
 			for (Signature signature : info.signatures) {
 				MessageDigest md = MessageDigest.getInstance("SHA");
 				md.update(signature.toByteArray());
-				Log.d("KeyHash:",
-						Base64.encodeToString(md.digest(), Base64.DEFAULT));
+				Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT));
 			}
 		} catch (NameNotFoundException e) {
 
@@ -139,13 +132,13 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		FacebookSdk.sdkInitialize(this.getApplicationContext());
+		giveUserPermissions();
 		callbackManager = CallbackManager.Factory.create();
 		LoginManager.getInstance().registerCallback(callbackManager,
 				new FacebookCallback<LoginResult>() {
 					@Override
 					public void onSuccess(LoginResult loginResult) {
-						handlePendingAction();
-						giveUserPermissions();
+						handlePendingAction();						
 						updateUI();
 					}
 
@@ -234,10 +227,18 @@ public class MainActivity extends FragmentActivity {
 
 		viewFriendsButton = (Button) findViewById(R.id.viewFriendsButton);
 		viewFriendsButton.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				onClickViewFriends();
+			}
+		});
+		
+		sharedAlbumsButton = (Button) findViewById(R.id.sharedAlbumsButton);
+		sharedAlbumsButton.setOnClickListener(new View.OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				//onClickViewFriends();
 
 			}
 
@@ -277,10 +278,8 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	private void giveUserPermissions() {
-		LoginManager.getInstance().logInWithReadPermissions(this,
-				Arrays.asList(USER_PERMISSIONS));
-		ParseFacebookUtils.logInWithReadPermissionsInBackground(this,
-				Arrays.asList(USER_PERMISSIONS));
+		//LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(USER_PERMISSIONS));
+		// ParseFacebookUtils.logInWithReadPermissionsInBackground(this, Arrays.asList(USER_PERMISSIONS));
 	}
 
 	@Override
@@ -399,11 +398,17 @@ public class MainActivity extends FragmentActivity {
 			profilePictureView.setProfileId(profile.getId());
 			greeting.setText(getString(R.string.hello_user,	profile.getFirstName()));
 			captureUserInfo();
+			uploadPhotoButton.setVisibility(View.VISIBLE);
+			inviteFriendsButton.setVisibility(View.VISIBLE);
+			sharedAlbumsButton.setVisibility(View.VISIBLE);
 
 		} else {
 			profilePictureView.setProfileId(null);
 			greeting.setText(null);
-		}
+			uploadPhotoButton.setVisibility(View.GONE);
+			inviteFriendsButton.setVisibility(View.GONE);
+			sharedAlbumsButton.setVisibility(View.GONE);
+		}		
 	}
 
 	private void handlePendingAction() {
@@ -497,8 +502,7 @@ public class MainActivity extends FragmentActivity {
 			} else {
 				// We need to get new permissions, then complete the action when
 				// we get called back.
-				LoginManager.getInstance().logInWithPublishPermissions(this,
-						Arrays.asList(PERMISSION));
+				LoginManager.getInstance().logInWithPublishPermissions(this, Arrays.asList(PERMISSION));
 
 				return;
 			}

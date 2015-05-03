@@ -1,12 +1,66 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
- 
-   <ImageView
-        android:id="@+id/mysingleimage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
- 
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="10dp"
+    android:fillViewport="false">
+    
+     <RelativeLayout
+         android:id="@+id/singleimagescroll"
+         android:layout_width="fill_parent"
+         android:layout_height="438dp"
+         android:orientation="vertical" >
+        
+        <ImageView
+            android:id="@+id/mysingleimage"
+            android:layout_width="400sp"
+            android:layout_height="600sp"
+            android:contentDescription="ss"
+            android:layout_alignParentTop="true"/>
+
+        <TextView
+            android:id="@+id/imgtextView1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20sp"
+            android:text="Photo Description:"
+            android:layout_below="@+id/mysingleimage" />
+
+        <EditText
+            android:id="@+id/imgeditText1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:ems="10"
+            android:layout_below="@+id/imgtextView1" />
+
+        <TextView
+            android:id="@+id/imgtextView2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="40sp"
+            android:text="Photo was taken at:"
+            android:layout_below="@+id/imgeditText1" />
+
+        <EditText
+            android:id="@+id/imgeditText2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10sp"
+            android:ems="10"
+            android:layout_below="@+id/imgtextView2" />
+
+        <Button
+            android:id="@+id/imgbutton1"
+            style="?android:attr/buttonStyleSmall"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="20sp"
+            android:text="Save"
+            android:layout_below="@+id/imgeditText2" />
+
 </RelativeLayout>
+</ScrollView>
+

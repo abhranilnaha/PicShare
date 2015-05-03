@@ -14,6 +14,7 @@
         android:orientation="vertical" >
 
         <com.facebook.login.widget.LoginButton
+            android:id="@+id/login_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
@@ -48,32 +49,50 @@
             <Button
                 android:id="@+id/postStatusUpdateButton"
                 android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:text="Post Status Update" />
+                android:layout_height="wrap_content"                
+                android:text="Post Status Update"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/postPhotoButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Post Photo" />
+                android:text="Post Photo"
+                android:visibility="gone" />
             
             <Button
                 android:id="@+id/uploadPhotoButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Upload Photo" />
+                android:layout_marginTop="5dp"
+          		android:layout_marginBottom="5dp"
+                android:text="Upload Photo"
+                android:visibility="gone" />
             
             <Button
                 android:id="@+id/inviteFriendsButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="Invite Friends" />
+                android:layout_marginTop="5dp"
+          		android:layout_marginBottom="5dp"
+                android:text="Invite Friends"
+                android:visibility="gone" />
             
             <Button
                 android:id="@+id/viewFriendsButton"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="View Friends" />
+                android:text="View Friends"
+                android:visibility="gone" />
+            
+            <Button
+                android:id="@+id/sharedAlbumsButton"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+          		android:layout_marginBottom="5dp"
+                android:text="Albums Shared With Me"
+                android:visibility="gone" />
             
         </LinearLayout>
     </LinearLayout>

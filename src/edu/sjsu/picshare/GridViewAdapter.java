@@ -4,6 +4,7 @@ import java.util.List;
  
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -17,20 +18,30 @@ public class GridViewAdapter extends BaseAdapter {
 	Context context;
 	LayoutInflater inflater;
 	ImageLoader imageLoader;
+	//ImageLoader imageNameLoader;
 	private List<ImageList> imagearraylist = null;
+	private List<ImageNameList> imageNameList = null;
 	private ArrayList<ImageList> arraylist;
+	private ArrayList<ImageNameList> arrayNameList;
  
-	public GridViewAdapter(Context context, List<ImageList> imagearraylist) {
+	public GridViewAdapter(Context context, List<ImageList> imagearraylist, List<ImageNameList> imageNameList) {
 		this.context = context;
 		this.imagearraylist = imagearraylist;
+		this.imageNameList = imageNameList;
 		inflater = LayoutInflater.from(context);
 		this.arraylist = new ArrayList<ImageList>();
+		this.arrayNameList= new ArrayList<ImageNameList>();
 		this.arraylist.addAll(imagearraylist);
+		this.arrayNameList.addAll(imageNameList);
 		imageLoader = new ImageLoader(context);
+		//imageNameLoader = new ImageLoader(context);
+		
 	}
- 
+
 	public class ViewHolder {
 		ImageView myimage;
+		ImageView myimagename;
+		
 	}
  
 	@Override
@@ -69,9 +80,14 @@ public class GridViewAdapter extends BaseAdapter {
 			public void onClick(View arg0) {
 				// Send single item click data to SingleItemView Class
 				Intent intent = new Intent(context, SingleItemView.class);
+				
+				Intent intent2 = new Intent(context, SingleItemView.class);
 				// Pass all data phone
 				intent.putExtra("myimage", imagearraylist.get(position)
 						.getImage());
+				intent.putExtra("myimagename", imageNameList.get(position)
+						.getImageName());
+				
 				context.startActivity(intent);
 			}
 		});
