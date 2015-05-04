@@ -16,7 +16,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
-
 import com.facebook.Profile;
 import com.parse.ParseException;
 import com.parse.ParseFile;

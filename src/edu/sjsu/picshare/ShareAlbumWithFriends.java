@@ -13,6 +13,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.parse.FindCallback;
+import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -26,7 +27,8 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 	Button shareAlbumButton;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onCreate(Bundle savedInstanceState) 
+	{
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.display_app_friends_list);
@@ -48,14 +50,17 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 		});
 	}
 	
-	private void onClickShareWithFriendsButton() {
+	private void onClickShareWithFriendsButton() 
+	{
 		ArrayList<Friend> fList = dataAdapter.mylist;
 		System.out.println("dataAdapter.mylist; :"+dataAdapter.mylist);
 		ArrayList<String> emailList = new ArrayList<String>(); 
 		for(int i=0;i<fList.size();i++) {
 		     Friend friend = fList.get(i);
+		     System.out.println("friend:::"+friend.name);
 		     if(friend.isBox()) {
-		    	 emailList.add(friend.getEmailAddress());
+		    	 System.out.println("friend:::"+friend.emailAddress);
+		    	 emailList.add(friend.emailAddress);
 		     }
 		 }
 		System.out.println("onClickShareWithFriendsButton....emailList is "+ emailList);
@@ -76,26 +81,42 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 //		intent.putExtra("emailList", emailList);
 //		intent.putExtra("albumName", albumName);
 //		startActivity(intent);
-	}
+	}	
 	boolean inserted = false;
 	private boolean saveSharedAlbumDetails(ArrayList<String> emailList,String albumName) {
 		
 		final String alb = albumName;
-		for(final String e : emailList) {
+		for(final String e : emailList) 
+		{
 			System.out.println("Email from list is "+ e);
 			
 			final ParseQuery<ParseObject> query = ParseQuery.getQuery("Customers");		
+			query.whereEqualTo(email, e);
 			query.findInBackground(new FindCallback<ParseObject>() {
+			
 				public void done(List<ParseObject> nameList, ParseException ex) {
 					if (ex == null) {
 						try {						
-							for (int i = 0; i < nameList.size(); i++) {
+							for (int i = 0; i < nameList.size(); i++) 
+							{
 								ParseObject obj = query.get(nameList.get(i).getObjectId());
-								String emailAddr = (String) obj.get("email");								
-								if (e.equals(emailAddr)) {
-									obj.add("AlbumsSharedWithMe", alb);
-									inserted =  true;
-								}
+								String objID  =obj .toString();
+								final String emailAddr = (String) obj.get("email");
+								final ParseQuery<ParseObject> query2 = ParseQuery.getQuery("Customers");
+								query2.getInBackground(objID, new GetCallback<ParseObject>() {
+									  public void done(ParseObject gameScore, ParseException exec) {
+									    if (exec == null) {
+									    									
+											if (e.equals(emailAddr)) {
+												gameScore.add("AlbumsSharedWithMe", alb);
+												gameScore.saveInBackground();
+												inserted =  true;
+											}
+									      //  let's update it with some new data. In this case, only cheatMode and score
+									      // will get sent to the Parse Cloud. playerName hasn't changed.
+									    }
+									  }
+									});
 							}
 							
 						} catch (ParseException e1) {
@@ -121,7 +142,7 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 							String emailAddr = (String) obj.get("email");
 							
 							if (!email.equals(emailAddr)) {
-								Friend friend = new Friend(friendName, false, email);
+								Friend friend = new Friend(friendName, false, emailAddr);
 								System.out.println("Friend name is : "+friendName);
 								System.out.println("Friend email is : "+emailAddr);
 								friendList.add(friend);

@@ -81,12 +81,9 @@ public class GridViewAdapter extends BaseAdapter {
 				// Send single item click data to SingleItemView Class
 				Intent intent = new Intent(context, SingleItemView.class);
 				
-				Intent intent2 = new Intent(context, SingleItemView.class);
 				// Pass all data phone
-				intent.putExtra("myimage", imagearraylist.get(position)
-						.getImage());
-				intent.putExtra("myimagename", imageNameList.get(position)
-						.getImageName());
+				intent.putExtra("myimage", imagearraylist.get(position).getImage());
+				intent.putExtra("myimagename", imageNameList.get(position).getImageName());
 				
 				context.startActivity(intent);
 			}

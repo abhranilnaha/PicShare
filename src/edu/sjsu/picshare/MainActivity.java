@@ -16,7 +16,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.location.Location;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -278,7 +277,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	private void giveUserPermissions() {
-		//LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(USER_PERMISSIONS));
+		// LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList(USER_PERMISSIONS));
 		// ParseFacebookUtils.logInWithReadPermissionsInBackground(this, Arrays.asList(USER_PERMISSIONS));
 	}
 
