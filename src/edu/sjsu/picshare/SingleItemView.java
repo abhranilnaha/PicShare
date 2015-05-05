@@ -49,7 +49,6 @@ public class SingleItemView extends Activity {
 		ImageView imgphoto = (ImageView) findViewById(R.id.mysingleimage);
 
 		// Load image into the ImageView
-
 		imageLoader.DisplayImage(myImage, imgphoto);
 		myImageName = i.getStringExtra("myimagename");
 
@@ -57,8 +56,7 @@ public class SingleItemView extends Activity {
 		imgLoc = (EditText) findViewById(R.id.imgeditText2);
 		saveImgDetails = (Button) findViewById(R.id.imgbutton1);
 
-		final ParseQuery<ParseObject> query2 = new ParseQuery<ParseObject>(
-				"ImageUpload");
+		final ParseQuery<ParseObject> query2 = new ParseQuery<ParseObject>("ImageUpload");
 		query2.whereEqualTo("objectId", myImageName);
 		query2.getFirstInBackground(new GetCallback<ParseObject>() {
 			public void done(ParseObject retImageObj, ParseException e) {
@@ -78,23 +76,19 @@ public class SingleItemView extends Activity {
 		saveImgDetails.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 
-				ParseQuery<ParseObject> query = ParseQuery
-						.getQuery("ImageUpload");
+				ParseQuery<ParseObject> query = ParseQuery.getQuery("ImageUpload");
 				query.whereEqualTo("objectId", myImageName);
 				query.getFirstInBackground(new GetCallback<ParseObject>() {
 					public void done(ParseObject object, ParseException e) {
 						if (object == null) {
 
 						} else {
-							object.put("ImageTitle", imgTitle.getText()
-									.toString());
-							object.put("ImageLocation", imgLoc.getText()
-									.toString());
+							object.put("ImageTitle", imgTitle.getText().toString());
+							object.put("ImageLocation", imgLoc.getText().toString());
 							object.saveInBackground(new SaveCallback() {
 								public void done(ParseException e) {
 									if (e == null) {
-										Toast.makeText(SingleItemView.this,
-												"Image Details Saved",
+										Toast.makeText(SingleItemView.this, "Image Details Saved",
 												Toast.LENGTH_SHORT).show();
 									}
 								}

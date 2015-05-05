@@ -17,6 +17,7 @@ import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.SaveCallback;
 
 public class ShareAlbumWithFriends extends Activity implements android.widget.CompoundButton.OnCheckedChangeListener {
 	private String albumName;
@@ -66,7 +67,7 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 		System.out.println("onClickShareWithFriendsButton....emailList is "+ emailList);
 		System.out.println("onClickShareWithFriendsButton....albumName is "+ albumName);
 		boolean success =  saveSharedAlbumDetails(emailList, albumName);
-		Toast.makeText(this, "Shared the album!", Toast.LENGTH_SHORT).show();
+		
 		//Change this -- Sindhu
 //		if(success)
 //		{
@@ -83,49 +84,32 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 //		startActivity(intent);
 	}	
 	boolean inserted = false;
-	private boolean saveSharedAlbumDetails(ArrayList<String> emailList,String albumName) {
-		
-		final String alb = albumName;
-		for(final String e : emailList) 
-		{
-			System.out.println("Email from list is "+ e);
-			
-			final ParseQuery<ParseObject> query = ParseQuery.getQuery("Customers");		
-			query.whereEqualTo(email, e);
-			query.findInBackground(new FindCallback<ParseObject>() {
-			
-				public void done(List<ParseObject> nameList, ParseException ex) {
-					if (ex == null) {
-						try {						
-							for (int i = 0; i < nameList.size(); i++) 
-							{
-								ParseObject obj = query.get(nameList.get(i).getObjectId());
-								String objID  =obj .toString();
-								final String emailAddr = (String) obj.get("email");
-								final ParseQuery<ParseObject> query2 = ParseQuery.getQuery("Customers");
-								query2.getInBackground(objID, new GetCallback<ParseObject>() {
-									  public void done(ParseObject gameScore, ParseException exec) {
-									    if (exec == null) {
-									    									
-											if (e.equals(emailAddr)) {
-												gameScore.add("AlbumsSharedWithMe", alb);
-												gameScore.saveInBackground();
-												inserted =  true;
-											}
-									      //  let's update it with some new data. In this case, only cheatMode and score
-									      // will get sent to the Parse Cloud. playerName hasn't changed.
-									    }
-									  }
-									});
+	private boolean saveSharedAlbumDetails(ArrayList<String> emailList, final String albumName) {	
+		final ParseQuery<ParseObject> query = ParseQuery.getQuery("Customers");		
+		query.whereContainedIn("email", emailList);
+		query.findInBackground(new FindCallback<ParseObject>() {			
+			public void done(List<ParseObject> customers, ParseException ex) {
+				if (ex == null) {
+					for (int i = 0; i < customers.size(); i++) {
+						ParseObject parseObject = customers.get(i);
+						List<String> albums = parseObject.getList("AlbumsSharedWithMe");
+						if (albums == null)
+							albums = new ArrayList<String>();
+						if (!albums.contains(albumName))
+							albums.add(albumName);
+						parseObject.put("AlbumsSharedWithMe", albums);
+						parseObject.saveInBackground(new SaveCallback() {
+							public void done(ParseException e) {
+								if (e == null) {
+									Toast.makeText(ShareAlbumWithFriends.this, 
+											"Shared the album!", Toast.LENGTH_SHORT).show();
+								}
 							}
-							
-						} catch (ParseException e1) {
-							e1.printStackTrace();
-						}
+						});
 					}
 				}
-			});
-		}
+			}
+		});		
 		return inserted;	
 	}
 
