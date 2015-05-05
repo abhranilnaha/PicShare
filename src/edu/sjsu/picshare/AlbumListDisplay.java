@@ -17,46 +17,58 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 
-public class AlbumListDisplay extends Activity 
-{
+public class AlbumListDisplay extends Activity {
 	GridView gvAlbums = null;
 	AlbumListAdapter adapterAlbums;
 	ArrayList<Album> albums = null;
 	String email;
+	boolean isReadOnly;
 
 	@Override
-	public void onCreate(Bundle savedInstanceState) 
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setTitle(R.string.view_albums);
 		setContentView(R.layout.album_grid);
 		albums = new ArrayList<Album>();
 		gvAlbums = (GridView) findViewById(R.id.grid_albums);
-		Intent i = getIntent();
-		email = i.getExtras().getString("email");
+		Intent intent = getIntent();
+		email = intent.getExtras().getString("email");
+		isReadOnly = intent.getExtras().getBoolean("isReadOnly");
+		
 		gvAlbums.setOnItemClickListener(new OnItemClickListener() {
 			public void onItemClick(AdapterView parent, View v, int position, long id) {
 				Album album = albums.get(position);
-				
-				System.out.println("In AlbumListDisplay class... User email is "+ email);
-				Intent intent = new Intent(AlbumListDisplay.this, CustomGallery.class);
-				Bundle bundle = new Bundle();
-				bundle.putString("albumName", album.getTitle());
-				bundle.putString("email",email);
-				intent.putExtras(bundle);
-				startActivity(intent);
+				if (isReadOnly) {
+					Intent intent = new Intent(AlbumListDisplay.this, FetchImages.class);
+					intent.putExtra("albumName", album.getTitle());
+					intent.putExtra("email", email);
+					intent.putExtra("isReadOnly", true);
+					startActivity(intent);
+				} else {									
+					System.out.println("In AlbumListDisplay class... User email is "+ email);
+					Intent intent = new Intent(AlbumListDisplay.this, CustomGallery.class);
+					Bundle bundle = new Bundle();
+					bundle.putString("albumName", album.getTitle());
+					bundle.putString("email", email);					
+					intent.putExtras(bundle);
+					startActivity(intent);
+				}
 			}
 		});
 
 		final ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("AlbumList");
-		query.whereEqualTo("Owner", email);
+		if (isReadOnly) {
+			ArrayList<String> albums = intent.getStringArrayListExtra("albums");
+			query.whereContainedIn("AlbumTitle", albums);
+		} else {
+			query.whereEqualTo("Owner", email);
+		}
 		query.findInBackground(new FindCallback<ParseObject>() {
 			public void done(List<ParseObject> albumList, ParseException e) {
 				if (e == null) {
 					try {						
-						for (int i = 0; i < albumList.size(); i++) 
-						{
+						for (int i = 0; i < albumList.size(); i++) {
 							ParseObject obj = query.get(albumList.get(i).getObjectId());
 							String albumTitle = (String) obj.get("AlbumTitle");
 							String albumDesc = (String) obj.get("AlbumDesc");
@@ -67,8 +79,7 @@ public class AlbumListDisplay extends Activity
 							album.setOwner(owner);
 							albums.add(album);
 						}
-						adapterAlbums = new AlbumListAdapter(
-								AlbumListDisplay.this, albums);
+						adapterAlbums = new AlbumListAdapter(AlbumListDisplay.this, albums);
 						gvAlbums.setAdapter(adapterAlbums);
 					} catch (ParseException e1) {
 						e1.printStackTrace();

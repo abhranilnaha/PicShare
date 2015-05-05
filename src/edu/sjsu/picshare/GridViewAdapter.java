@@ -23,8 +23,9 @@ public class GridViewAdapter extends BaseAdapter {
 	private List<ImageNameList> imageNameList = null;
 	private ArrayList<ImageList> arraylist;
 	private ArrayList<ImageNameList> arrayNameList;
+	private boolean isReadOnly;
  
-	public GridViewAdapter(Context context, List<ImageList> imagearraylist, List<ImageNameList> imageNameList) {
+	public GridViewAdapter(Context context, List<ImageList> imagearraylist, List<ImageNameList> imageNameList, boolean isReadOnly) {
 		this.context = context;
 		this.imagearraylist = imagearraylist;
 		this.imageNameList = imageNameList;
@@ -33,9 +34,8 @@ public class GridViewAdapter extends BaseAdapter {
 		this.arrayNameList= new ArrayList<ImageNameList>();
 		this.arraylist.addAll(imagearraylist);
 		this.arrayNameList.addAll(imageNameList);
-		imageLoader = new ImageLoader(context);
-		//imageNameLoader = new ImageLoader(context);
-		
+		this.isReadOnly = isReadOnly;
+		imageLoader = new ImageLoader(context);				
 	}
 
 	public class ViewHolder {
@@ -84,6 +84,7 @@ public class GridViewAdapter extends BaseAdapter {
 				// Pass all data phone
 				intent.putExtra("myimage", imagearraylist.get(position).getImage());
 				intent.putExtra("myimagename", imageNameList.get(position).getImageName());
+				intent.putExtra("isReadOnly", isReadOnly);
 				
 				context.startActivity(intent);
 			}

@@ -69,8 +69,10 @@ public class UploadPhoto extends Activity {
 	private void onClickPostPhoto() {
     	Intent intent = new Intent(this, AlbumListDisplay.class);
     	intent.putExtra("email",email);
+    	intent.putExtra("isReadOnly", false);
         startActivity(intent);
     }
+	
 	public void onClickViewPhoto(){
 		Intent intent = new Intent(this, FetchImages.class);   
 		//intent.putExtra("image", retrievedImages);

@@ -69,8 +69,7 @@ public class CustomGallery extends Activity {
 
 		this.imageUrls = new ArrayList<String>();
 
-		for (int i = 0; i < imagecursor.getCount(); i++) 
-		{
+		for (int i = 0; i < imagecursor.getCount(); i++) {
 			imagecursor.moveToPosition(i);
 			int dataColumnIndex = imagecursor
 					.getColumnIndex(MediaStore.Images.Media.DATA);
@@ -163,6 +162,7 @@ public class CustomGallery extends Activity {
 				Intent intent = new Intent(CustomGallery.this, FetchImages.class);
 				intent.putExtra("albumName", albumName);
 				intent.putExtra("email", email);
+				intent.putExtra("isReadOnly", false);
 				startActivity(intent);
 			}
 		});

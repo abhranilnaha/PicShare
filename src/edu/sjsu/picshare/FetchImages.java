@@ -32,34 +32,38 @@ public class FetchImages extends Activity {
 	private List<ImageList> imageArrayList = null;
 	private String albumName;
 	private String email;
+	private boolean isReadOnly;
 	private List<ImageNameList> imageNameList = null;
+	private Button shareAlbum;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
-		albumName = getIntent().getExtras().getString("albumName");
-		email = getIntent().getExtras().getString("email");
-		setTitle(String.format(getResources().getString(R.string.album),
-				albumName));
+		
+		Bundle bundle = getIntent().getExtras();
+		albumName = bundle.getString("albumName");
+		email = bundle.getString("email");
+		isReadOnly = bundle.getBoolean("isReadOnly");
+		
+		setTitle(String.format(getResources().getString(R.string.album), albumName));
 		// Get the view from gridview_main.xml
 		setContentView(R.layout.gridview_main);
 
-		((Button) findViewById(R.id.shareAlbum))
-		.setOnClickListener(new View.OnClickListener() {
-
-			@Override
-			public void onClick(View v) 
-			{
-				Intent intent = new Intent(FetchImages.this,
-						ShareAlbumWithFriends.class);
-				intent.putExtra("albumName", albumName);
-				intent.putExtra("email", email);
-				startActivity(intent);
-				
-			}
-			
-		});
+		shareAlbum  = (Button) findViewById(R.id.shareAlbum);
+		if (isReadOnly) {
+			shareAlbum.setVisibility(View.GONE);
+		} else {
+			shareAlbum.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent intent = new Intent(FetchImages.this, ShareAlbumWithFriends.class);
+					intent.putExtra("albumName", albumName);
+					intent.putExtra("email", email);
+					startActivity(intent);				
+				}			
+			});
+		}
 		
 //		((Button) findViewById(R.id.shareAlbum))
 //				.setOnClickListener(new View.OnClickListener() {
@@ -161,7 +165,7 @@ public class FetchImages extends Activity {
 			// Locate the gridview in gridview_main.xml
 			gridview = (GridView) findViewById(R.id.gridview);
 			// Pass the results into ListViewAdapter.java
-			adapter = new GridViewAdapter(FetchImages.this, imageArrayList,imageNameList );
+			adapter = new GridViewAdapter(FetchImages.this, imageArrayList,imageNameList, isReadOnly);
 			// Binds the Adapter to the ListView
 			gridview.setAdapter(adapter);
 			// Close the progressdialog

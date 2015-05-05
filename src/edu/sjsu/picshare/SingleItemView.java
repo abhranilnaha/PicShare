@@ -32,7 +32,7 @@ public class SingleItemView extends Activity {
 
 	// ImageLoader imageNameLoader = new ImageLoader(this);
 	List<ParseObject> imgdet;
-	Intent i;
+	Intent intent;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -41,20 +41,28 @@ public class SingleItemView extends Activity {
 		// Get the view from singleitemview.xml
 		setContentView(R.layout.singleitemview);
 
-		i = getIntent();
+		intent = getIntent();
 		// i2 = getIntent();
 		// Get the intent from ListViewAdapter
-		myImage = i.getStringExtra("myimage");
+		myImage = intent.getStringExtra("myimage");
 		// Locate the ImageView in singleitemview.xml
 		ImageView imgphoto = (ImageView) findViewById(R.id.mysingleimage);
 
 		// Load image into the ImageView
 		imageLoader.DisplayImage(myImage, imgphoto);
-		myImageName = i.getStringExtra("myimagename");
+		myImageName = intent.getStringExtra("myimagename");
 
 		imgTitle = (EditText) findViewById(R.id.imgeditText1);
 		imgLoc = (EditText) findViewById(R.id.imgeditText2);
 		saveImgDetails = (Button) findViewById(R.id.imgbutton1);
+		
+		if (intent.getBooleanExtra("isReadOnly", false)) {
+			findViewById(R.id.imgtextView1).setVisibility(View.GONE);
+			findViewById(R.id.imgtextView2).setVisibility(View.GONE);
+			imgTitle.setVisibility(View.GONE);
+			imgLoc.setVisibility(View.GONE);
+			saveImgDetails.setVisibility(View.GONE);
+		}
 
 		final ParseQuery<ParseObject> query2 = new ParseQuery<ParseObject>("ImageUpload");
 		query2.whereEqualTo("objectId", myImageName);

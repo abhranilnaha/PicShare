@@ -73,8 +73,9 @@ public class MainActivity extends FragmentActivity {
 	private CallbackManager callbackManager;
 	private ProfileTracker profileTracker;
 	private ShareDialog shareDialog;
-	String name;
-	String email;
+	private String name;
+	private String email;
+	
 	private FacebookCallback<Sharer.Result> shareCallback = new FacebookCallback<Sharer.Result>() {
 		@Override
 		public void onCancel() {
@@ -95,8 +96,7 @@ public class MainActivity extends FragmentActivity {
 			if (result.getPostId() != null) {
 				String title = getString(R.string.success);
 				String id = result.getPostId();
-				String alertMessage = getString(
-						R.string.successfully_posted_post, id);
+				String alertMessage = getString(R.string.successfully_posted_post, id);
 				showResult(title, alertMessage);
 			}
 		}
@@ -172,8 +172,7 @@ public class MainActivity extends FragmentActivity {
 		shareDialog.registerCallback(callbackManager, shareCallback);
 
 		if (savedInstanceState != null) {
-			String name = savedInstanceState
-					.getString(PENDING_ACTION_BUNDLE_KEY);
+			String name = savedInstanceState.getString(PENDING_ACTION_BUNDLE_KEY);
 			pendingAction = PendingAction.valueOf(name);
 		}
 
@@ -184,7 +183,6 @@ public class MainActivity extends FragmentActivity {
 			protected void onCurrentProfileChanged(Profile oldProfile,
 					Profile currentProfile) {
 				updateUI();
-
 				handlePendingAction();
 			}
 		};
@@ -215,13 +213,10 @@ public class MainActivity extends FragmentActivity {
 
 		inviteFriendsButton = (Button) findViewById(R.id.inviteFriendsButton);
 		inviteFriendsButton.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
 				onClickInviteFriends();
-
 			}
-
 		});
 
 		viewFriendsButton = (Button) findViewById(R.id.viewFriendsButton);
@@ -234,13 +229,10 @@ public class MainActivity extends FragmentActivity {
 		
 		sharedAlbumsButton = (Button) findViewById(R.id.sharedAlbumsButton);
 		sharedAlbumsButton.setOnClickListener(new View.OnClickListener() {
-
 			@Override
 			public void onClick(View v) {
-				//onClickViewFriends();
-
+				onClickSharedAlbums();
 			}
-
 		});
 
 		// Can we present the share dialog for regular links?
@@ -462,6 +454,28 @@ public class MainActivity extends FragmentActivity {
 		System.out.println("onClickUploadPhoto .... email is " + email);
 		intent.putExtra("email", email);
 		startActivity(intent);
+	}
+	
+	private void onClickSharedAlbums() {
+		final ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("Customers");
+		query.whereEqualTo("email", email);
+		query.findInBackground(new FindCallback<ParseObject>() {
+			public void done(List<ParseObject> customers, ParseException e) {
+				if (e == null) {
+					ParseObject customer = customers.get(0);
+					List<String> albums = customer.getList("AlbumsSharedWithMe");
+					if (albums == null)
+						albums = new ArrayList<String>();
+					Intent intent = new Intent(MainActivity.this, AlbumListDisplay.class);
+					System.out.println("onClickUploadPhoto .... email is " + email);
+					intent.putExtra("email", email);
+					intent.putStringArrayListExtra("albums", new ArrayList<String>(albums));
+					intent.putExtra("isReadOnly", true);
+					startActivity(intent);
+					
+				}
+			}
+		});	
 	}
 
 	private void onClickPostPhoto() {
