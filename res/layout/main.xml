@@ -3,24 +3,24 @@
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:background="#FFF"
+    android:background="#222"
     android:orientation="vertical" >
 
     <LinearLayout
         android:id="@+id/main_ui_container"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:background="#FFF"
         android:orientation="vertical" >
-
+         
         <com.facebook.login.widget.LoginButton
             android:id="@+id/login_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="5dp"
             facebook:confirm_logout="false"
             facebook:tooltip_mode="never_display" />
+
 
         <LinearLayout
             android:layout_width="150dp"
@@ -29,13 +29,25 @@
             android:gravity="center_horizontal"
             android:orientation="vertical" >
 
+		    <TextView
+		          android:id="@+id/app_greeting"
+		          android:layout_width="fill_parent"
+		          android:layout_height="wrap_content"
+		          android:layout_gravity="center_horizontal"
+		          android:textColor="#DAFFFF"
+		          android:layout_marginTop="200dp"
+		          android:visibility="gone"
+		          android:text="Welcome!"
+		          android:textStyle="bold"
+		          android:textSize="33sp" />
+
             <TextView
                 android:id="@+id/greeting"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginLeft="10dp"
-                android:textColor="#333"
+                android:layout_marginLeft="5dp"
+                android:textColor="#FFF"
                 android:textSize="18sp" />
 
             <com.facebook.login.widget.ProfilePictureView
@@ -44,6 +56,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal"
+                android:visibility="gone"
                 facebook:preset_size="normal" />
 
             <Button

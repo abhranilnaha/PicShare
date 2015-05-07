@@ -1,9 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:background="@android:color/white"
-    android:orientation="vertical" >
+    >
+
+    <EditText
+        android:id="@+id/searchView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@+id/search_logo"
+        android:hint="Search for albums"
+        android:textColor="#222" >
+
+    </EditText>
+    
+<LinearLayout
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@android:color/white"
+    android:orientation="horizontal"
+    android:layout_marginTop="50dp" >
 
     <GridView
         android:id="@+id/grid_albums"
@@ -11,6 +29,7 @@
         android:layout_height="fill_parent"
         android:background="@android:color/transparent"
         android:columnWidth="90dp"
+        android:layout_marginTop="10dp"
         android:gravity="center"
         android:horizontalSpacing="8dp"
         android:numColumns="auto_fit"
@@ -18,3 +37,14 @@
         android:verticalSpacing="8dp" />
 
 </LinearLayout>
+
+<ImageView
+    android:id="@+id/search_logo"
+    android:layout_width="40dp"
+    android:layout_height="40dp"
+    android:layout_alignParentRight="true"
+    android:layout_alignParentTop="true"
+    android:src="@drawable/search_logo"
+    android:clickable="true" />
+
+</RelativeLayout>

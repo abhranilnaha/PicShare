@@ -16,6 +16,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.Signature;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -23,6 +25,7 @@ import android.util.Base64;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
@@ -56,7 +59,7 @@ public class MainActivity extends FragmentActivity {
 
 	private static final String PERMISSION = "publish_actions";
 	private static final String USER_PERMISSIONS[] = { "user_friends", "email" };
-	
+		
 	private final String PENDING_ACTION_BUNDLE_KEY = "edu.sjsu.picshare:PendingAction";
 
 	private Button postStatusUpdateButton;
@@ -75,6 +78,8 @@ public class MainActivity extends FragmentActivity {
 	private ShareDialog shareDialog;
 	private String name;
 	private String email;
+	private TextView appGreet;
+	LinearLayout linLay; 
 	
 	private FacebookCallback<Sharer.Result> shareCallback = new FacebookCallback<Sharer.Result>() {
 		@Override
@@ -177,6 +182,8 @@ public class MainActivity extends FragmentActivity {
 		}
 
 		setContentView(R.layout.main);
+		
+		linLay = (LinearLayout) findViewById(R.id.main_ui_container);
 
 		profileTracker = new ProfileTracker() {
 			@Override
@@ -196,7 +203,9 @@ public class MainActivity extends FragmentActivity {
 				onClickPostStatusUpdate();
 			}
 		});
-
+		
+		appGreet = (TextView) findViewById(R.id.app_greeting);
+		
 		postPhotoButton = (Button) findViewById(R.id.postPhotoButton);
 		postPhotoButton.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View view) {
@@ -392,6 +401,12 @@ public class MainActivity extends FragmentActivity {
 			uploadPhotoButton.setVisibility(View.VISIBLE);
 			inviteFriendsButton.setVisibility(View.VISIBLE);
 			sharedAlbumsButton.setVisibility(View.VISIBLE);
+			profilePictureView.setVisibility(View.VISIBLE);
+			linLay.setBackgroundColor(Color.WHITE);
+			appGreet.setVisibility(View.GONE);
+			
+			
+			
 
 		} else {
 			profilePictureView.setProfileId(null);
@@ -399,6 +414,9 @@ public class MainActivity extends FragmentActivity {
 			uploadPhotoButton.setVisibility(View.GONE);
 			inviteFriendsButton.setVisibility(View.GONE);
 			sharedAlbumsButton.setVisibility(View.GONE);
+			profilePictureView.setVisibility(View.GONE);
+			linLay.setBackgroundResource(R.drawable.pic_logo);
+			appGreet.setVisibility(View.VISIBLE);
 		}		
 	}
 

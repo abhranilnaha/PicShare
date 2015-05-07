@@ -3,6 +3,7 @@ package edu.sjsu.picshare;
 import java.util.ArrayList;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,7 +18,10 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
 	public AlbumListAdapter(Context context, ArrayList<Album> mylist) {
 		super(context, R.layout.album_list, mylist);
 		this.mylist = mylist;
+		
 	}
+	
+
 
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Album album = getItem(position);
