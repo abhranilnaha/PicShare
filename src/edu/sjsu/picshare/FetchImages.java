@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -16,7 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.GridView;
-import com.facebook.Profile;
+import android.widget.TextView;
+
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseObject;
@@ -35,6 +33,7 @@ public class FetchImages extends Activity {
 	private boolean isReadOnly;
 	private List<ImageNameList> imageNameList = null;
 	private Button shareAlbum;
+	private TextView sharedBy;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +52,10 @@ public class FetchImages extends Activity {
 		shareAlbum  = (Button) findViewById(R.id.shareAlbum);
 		if (isReadOnly) {
 			shareAlbum.setVisibility(View.GONE);
+			String owner = bundle.getString("owner");
+			sharedBy = (TextView) findViewById(R.id.sharedBy);
+			sharedBy.setVisibility(View.VISIBLE);
+			sharedBy.setText(getString(R.string.sharedBy) + " " + owner);
 		} else {
 			shareAlbum.setOnClickListener(new View.OnClickListener() {
 				@Override
@@ -65,35 +68,9 @@ public class FetchImages extends Activity {
 			});
 		}
 		
-//		((Button) findViewById(R.id.shareAlbum))
-//				.setOnClickListener(new View.OnClickListener() {
-//					public void onClick(View view) {
-//						Intent intent = new Intent(FetchImages.this,
-//								FetchImages.class);
-//						intent.putExtra("albumName", albumName);
-//						PendingIntent pendingIntent = PendingIntent
-//								.getActivity(FetchImages.this, 0, intent, 0);
-//
-//						Profile profile = Profile.getCurrentProfile();
-//						Notification notification = new Notification.Builder(
-//								FetchImages.this)
-//								.setContentTitle(
-//										profile.getName()
-//												+ " has shared an album: "
-//												+ albumName)
-//								.setSmallIcon(R.drawable.icon)
-//								.setContentIntent(pendingIntent).build();
-//						NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-//						// hide the notification after its selected
-//						notification.flags |= Notification.FLAG_AUTO_CANCEL;
-//
-//						notificationManager.notify(0, notification);
-//					}
-//				});
-
 		// Execute RemoteDataTask AsyncTask
 		new RemoteDataTask().execute();
-	}
+	}	
 	
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {

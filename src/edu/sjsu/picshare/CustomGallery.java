@@ -166,7 +166,6 @@ public class CustomGallery extends Activity {
 				startActivity(intent);
 			}
 		});
-
 	}
 	
 	@Override

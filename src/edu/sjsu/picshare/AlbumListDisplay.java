@@ -42,6 +42,7 @@ public class AlbumListDisplay extends Activity {
 				if (isReadOnly) {
 					Intent intent = new Intent(AlbumListDisplay.this, FetchImages.class);
 					intent.putExtra("albumName", album.getTitle());
+					intent.putExtra("owner", album.getOwner());
 					intent.putExtra("email", email);
 					intent.putExtra("isReadOnly", true);
 					startActivity(intent);
@@ -49,7 +50,7 @@ public class AlbumListDisplay extends Activity {
 					System.out.println("In AlbumListDisplay class... User email is "+ email);
 					Intent intent = new Intent(AlbumListDisplay.this, CustomGallery.class);
 					Bundle bundle = new Bundle();
-					bundle.putString("albumName", album.getTitle());
+					bundle.putString("albumName", album.getTitle());					
 					bundle.putString("email", email);					
 					intent.putExtras(bundle);
 					startActivity(intent);

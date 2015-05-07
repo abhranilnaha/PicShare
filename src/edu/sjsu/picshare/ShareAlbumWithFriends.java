@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,8 +16,8 @@ import android.widget.CompoundButton;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.facebook.Profile;
 import com.parse.FindCallback;
-import com.parse.GetCallback;
 import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
@@ -66,25 +70,10 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 		 }
 		System.out.println("onClickShareWithFriendsButton....emailList is "+ emailList);
 		System.out.println("onClickShareWithFriendsButton....albumName is "+ albumName);
-		boolean success =  saveSharedAlbumDetails(emailList, albumName);
-		
-		//Change this -- Sindhu
-//		if(success)
-//		{
-//			Toast.makeText(this, "Shared the album!", Toast.LENGTH_SHORT).show();
-//		}
-//		else
-//		{
-//			Toast.makeText(this, "Error while sharing the Album!", Toast.LENGTH_SHORT).show();
-//		}
-		
-//		Intent intent = new Intent(this, SaveShareAlbumDetails.class);
-//		intent.putExtra("emailList", emailList);
-//		intent.putExtra("albumName", albumName);
-//		startActivity(intent);
-	}	
-	boolean inserted = false;
-	private boolean saveSharedAlbumDetails(ArrayList<String> emailList, final String albumName) {	
+		saveSharedAlbumDetails(emailList, albumName);
+	}
+	
+	private void saveSharedAlbumDetails(ArrayList<String> emailList, final String albumName) {
 		final ParseQuery<ParseObject> query = ParseQuery.getQuery("Customers");		
 		query.whereContainedIn("email", emailList);
 		query.findInBackground(new FindCallback<ParseObject>() {			
@@ -103,14 +92,34 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 								if (e == null) {
 									Toast.makeText(ShareAlbumWithFriends.this, 
 											"Shared the album!", Toast.LENGTH_SHORT).show();
+									sendNotification();
 								}
 							}
 						});
 					}
 				}
 			}
-		});		
-		return inserted;	
+		});	
+	}
+	
+	private void sendNotification() {		
+		Intent intent = new Intent(ShareAlbumWithFriends.this, FetchImages.class);
+		intent.putExtra("albumName", albumName);
+		PendingIntent pendingIntent = PendingIntent
+				.getActivity(ShareAlbumWithFriends.this, 0, intent, 0);
+
+		Profile profile = Profile.getCurrentProfile();
+		Notification notification = new Notification.Builder(
+				ShareAlbumWithFriends.this).setContentTitle(
+						profile.getName() + " has shared an album: " + albumName)
+				.setSmallIcon(R.drawable.icon)
+				.setContentIntent(pendingIntent).build();
+		NotificationManager notificationManager = 
+				(NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+		// hide the notification after its selected
+		notification.flags |= Notification.FLAG_AUTO_CANCEL;
+
+		notificationManager.notify(0, notification);		
 	}
 
 	private void displayListView() throws ParseException {

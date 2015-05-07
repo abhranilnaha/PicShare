@@ -32,5 +32,6 @@
     <string name="view_existing_photos">View Existing Photos</string>
     <string name="upload_album_photos">Upload Photos To Album</string>
     <string name="shareAlbum">Share this Album</string>
+    <string name="sharedBy">Shared by:</string>
 
 </resources>
