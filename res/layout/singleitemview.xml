@@ -15,7 +15,7 @@
         <ImageView
             android:id="@+id/mysingleimage"
             android:layout_width="400sp"
-            android:layout_height="600sp"
+            android:layout_height="400sp"
             android:layout_alignParentTop="true"
             android:contentDescription="ss" />
 
@@ -34,6 +34,15 @@
             android:layout_below="@+id/imgtextView1"
             android:layout_marginTop="10sp"
             android:ems="10" />
+        
+        <TextView
+            android:id="@+id/imgTitleView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgtextView1"
+            android:layout_marginTop="10sp"
+            android:layout_marginBottom="10sp"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/imgtextView2"
@@ -50,6 +59,14 @@
             android:layout_below="@+id/imgtextView2"
             android:layout_marginTop="10sp"
             android:ems="10" />
+        
+        <TextView
+            android:id="@+id/imgLocView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imgtextView2"
+            android:layout_marginTop="10sp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/imgbutton1"

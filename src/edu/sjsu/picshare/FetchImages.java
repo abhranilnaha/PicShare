@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -70,13 +72,24 @@ public class FetchImages extends Activity {
 		
 		// Execute RemoteDataTask AsyncTask
 		new RemoteDataTask().execute();
-	}	
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.home, menu);
+	    return true;
+	}
 	
 	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.menu_settings:
+            	Intent intent = new Intent(this, MainActivity.class);			
+    			startActivity(intent);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

@@ -29,7 +29,7 @@ public class SendInviteAcitvity extends Activity {
 						@Override
 						public void onDeferredAppLinkDataFetched(
 								AppLinkData appLinkData) {
-
+							finish();	
 						}
 					});
 		}

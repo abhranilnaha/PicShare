@@ -421,7 +421,7 @@ public class MainActivity extends FragmentActivity {
 	}
 
 	private void handlePendingAction() {
-		PendingAction previouslyPendingAction = pendingAction;		
+		PendingAction previouslyPendingAction = pendingAction;	
 		pendingAction = PendingAction.NONE;
 
 		switch (previouslyPendingAction) {

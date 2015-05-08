@@ -7,6 +7,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -71,8 +73,7 @@ public class AlbumListDisplay extends Activity {
 					startActivity(intent);
 				}
 			}
-		});
-		
+		});		
 				
 		final ParseQuery<ParseObject> query = new ParseQuery<ParseObject>("AlbumList");
 		if (isReadOnly) {
@@ -114,14 +115,11 @@ public class AlbumListDisplay extends Activity {
 				}
 					
 			}
-		});
+		});		
 		
-		
-		searchBut.setOnClickListener(new View.OnClickListener() {
-			
+		searchBut.setOnClickListener(new View.OnClickListener() {			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
 				String searchList = search.getText().toString();
 				int count=0;
 				albums.clear();
@@ -156,10 +154,21 @@ public class AlbumListDisplay extends Activity {
 	}
 	
 	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.home, menu);
+	    return true;
+	}
+	
+	@Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.menu_settings:
+            	Intent intent = new Intent(this, MainActivity.class);			
+				startActivity(intent);
                 break;
             default:
                 return super.onOptionsItemSelected(item);

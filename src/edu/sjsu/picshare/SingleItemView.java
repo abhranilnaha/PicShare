@@ -5,6 +5,8 @@ import java.util.List;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -25,6 +27,8 @@ public class SingleItemView extends Activity {
 	String myImageName;
 	private EditText imgTitle;
 	private EditText imgLoc;
+	private TextView imgTitleView;
+	private TextView imgLocView;
 	private Button saveImgDetails;
 	String retImageDesc;
 	String retImageLoc;
@@ -54,14 +58,16 @@ public class SingleItemView extends Activity {
 
 		imgTitle = (EditText) findViewById(R.id.imgeditText1);
 		imgLoc = (EditText) findViewById(R.id.imgeditText2);
+		imgTitleView = (TextView) findViewById(R.id.imgTitleView);
+		imgLocView = (TextView) findViewById(R.id.imgLocView);
 		saveImgDetails = (Button) findViewById(R.id.imgbutton1);
 		
 		if (intent.getBooleanExtra("isReadOnly", false)) {
-			findViewById(R.id.imgtextView1).setVisibility(View.GONE);
-			findViewById(R.id.imgtextView2).setVisibility(View.GONE);
 			imgTitle.setVisibility(View.GONE);
 			imgLoc.setVisibility(View.GONE);
 			saveImgDetails.setVisibility(View.GONE);
+			imgTitleView.setVisibility(View.VISIBLE);
+			imgLocView.setVisibility(View.VISIBLE);
 		}
 
 		final ParseQuery<ParseObject> query2 = new ParseQuery<ParseObject>("ImageUpload");
@@ -76,6 +82,8 @@ public class SingleItemView extends Activity {
 								TextView.BufferType.EDITABLE);
 						imgLoc.setText(retImageLoc.toString(),
 								TextView.BufferType.EDITABLE);
+						imgTitleView.setText(retImageDesc.toString());
+						imgLocView.setText(retImageLoc.toString());
 					}
 				}
 			}
@@ -107,6 +115,13 @@ public class SingleItemView extends Activity {
 			}
 		});
 	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.home, menu);
+	    return true;
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -114,6 +129,10 @@ public class SingleItemView extends Activity {
 		case android.R.id.home:
 			finish();
 			break;
+		case R.id.menu_settings:
+        	Intent intent = new Intent(this, MainActivity.class);			
+			startActivity(intent);
+            break;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

@@ -33,5 +33,6 @@
     <string name="upload_album_photos">Upload Photos To Album</string>
     <string name="shareAlbum">Share this Album</string>
     <string name="sharedBy">Shared by:</string>
+    <string name="home">Home</string>
 
 </resources>

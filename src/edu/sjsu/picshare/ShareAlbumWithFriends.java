@@ -8,7 +8,10 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,8 +35,7 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 	Button shareAlbumButton;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) 
-	{
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.display_app_friends_list);
@@ -55,8 +57,14 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 		});
 	}
 	
-	private void onClickShareWithFriendsButton() 
-	{
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getMenuInflater();
+	    inflater.inflate(R.menu.home, menu);
+	    return true;
+	}
+	
+	private void onClickShareWithFriendsButton() {
 		ArrayList<Friend> fList = dataAdapter.mylist;
 		System.out.println("dataAdapter.mylist; :"+dataAdapter.mylist);
 		ArrayList<String> emailList = new ArrayList<String>(); 
@@ -73,7 +81,7 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 		saveSharedAlbumDetails(emailList, albumName);
 	}
 	
-	private void saveSharedAlbumDetails(ArrayList<String> emailList, final String albumName) {
+	private void saveSharedAlbumDetails(final ArrayList<String> emailList, final String albumName) {
 		final ParseQuery<ParseObject> query = ParseQuery.getQuery("Customers");		
 		query.whereContainedIn("email", emailList);
 		query.findInBackground(new FindCallback<ParseObject>() {			
@@ -93,6 +101,7 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 									Toast.makeText(ShareAlbumWithFriends.this, 
 											"Shared the album!", Toast.LENGTH_SHORT).show();
 									sendNotification();
+									sendEmailNotification(emailList);
 								}
 							}
 						});
@@ -100,6 +109,25 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
 				}
 			}
 		});	
+	}
+	
+	private void sendEmailNotification(ArrayList<String> emailList)	{
+		Intent emailIntent = new Intent(Intent.ACTION_SEND);
+		String[] emailArr = new String[emailList.size()];
+		emailArr = emailList.toArray(emailArr);
+			System.out.println(emailArr);
+			emailIntent.setData(Uri.parse("mailto:"));
+			emailIntent.setType("text/plain");
+			emailIntent.putExtra(Intent.EXTRA_EMAIL,(emailArr));
+			emailIntent.putExtra(Intent.EXTRA_SUBJECT, "Shared album from Picshare");
+			emailIntent.putExtra(Intent.EXTRA_TEXT, "Please check your PicShare for albums shared with you!");
+	      	try {
+	      			startActivity(Intent.createChooser(emailIntent, "Send mail..."));
+	      			finish();
+	      	} catch (android.content.ActivityNotFoundException ex) {
+	      		Toast.makeText(this, 
+	      				"There is no email client installed.", Toast.LENGTH_SHORT).show();
+	      	}		
 	}
 	
 	private void sendNotification() {		
@@ -157,6 +185,10 @@ public class ShareAlbumWithFriends extends Activity implements android.widget.Co
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
+                break;
+            case R.id.menu_settings:
+            	Intent intent = new Intent(this, MainActivity.class);			
+				startActivity(intent);
                 break;
             default:
                 return super.onOptionsItemSelected(item);
