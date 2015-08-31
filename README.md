@@ -11,3 +11,9 @@ A photo sharing android application called PicShare which will have the followin
 5. Photo Visibility: Albums can be shared with individual friends as well as group of friends in PicShare. The albums and its corresponding photos can only be viewed by the owner and those friends with whom the albums were shared. 
 
 6. Photo Search: Every use in PicShare can browse through his owned and shared albums and browse photos inside the albums as well. Users with owner or shared permissions can comment on any photo they have access to.
+
+##Developing
+
+1. Android SDK  with Eclipse
+2. Facebook SDK 4.0
+3. Parse DB to store the user, photo and album details
