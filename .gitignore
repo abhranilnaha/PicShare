@@ -1,0 +1,11 @@
+.settings/
+gradle/wrapper/
+.DS_Store
+.classpath
+.project
+android.jks
+proguard-project.txt
+lint.xml
+gradlew.bat
+gradlew
+bin/
